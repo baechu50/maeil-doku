@@ -7,6 +7,18 @@ export const useSudokuBoard = (initial: SudokuBoard) => {
   const [selectedCell, setSelectedCell] = useState<[number, number] | null>(
     null
   );
+
+  const [isMemoMode, setIsMemoMode] = useState(false);
+  const [memos, setMemos] = useState<boolean[][][]>(() =>
+    Array(9)
+      .fill(null)
+      .map(() =>
+        Array(9)
+          .fill(null)
+          .map(() => Array(9).fill(false))
+      )
+  );
+
   const [highlightNumber, setHighlightNumber] = useState<number | null>(null);
   const [highlightArea, setHighlightArea] = useState<{
     row: number | null;
@@ -16,13 +28,20 @@ export const useSudokuBoard = (initial: SudokuBoard) => {
 
   const handleNumberInput = (num: number) => {
     if (!selectedCell) return;
+
     const [row, col] = selectedCell;
     if (initialBoard[row][col] !== 0) return;
 
-    const newBoard = board.map((r, rIdx) =>
-      rIdx === row ? r.map((c, cIdx) => (cIdx === col ? num : c)) : r
-    );
-    setBoard(newBoard);
+    if (isMemoMode) {
+      const newMemos = [...memos];
+      newMemos[row][col][num - 1] = !newMemos[row][col][num - 1];
+      setMemos(newMemos);
+    } else {
+      const newBoard = board.map((r, rIdx) =>
+        rIdx === row ? r.map((c, cIdx) => (cIdx === col ? num : c)) : r
+      );
+      setBoard(newBoard);
+    }
   };
 
   const handleCellSelect = (row: number, col: number) => {
@@ -54,6 +73,15 @@ export const useSudokuBoard = (initial: SudokuBoard) => {
     setSelectedCell(null);
     setHighlightNumber(null);
     setHighlightArea({ row: null, col: null, box: null });
+    setMemos(
+      Array(9)
+        .fill(null)
+        .map(() =>
+          Array(9)
+            .fill(null)
+            .map(() => Array(9).fill(false))
+        )
+    );
   };
 
   return {
@@ -66,5 +94,8 @@ export const useSudokuBoard = (initial: SudokuBoard) => {
     setNewPuzzle,
     highlightNumber,
     highlightArea,
+    isMemoMode,
+    setIsMemoMode,
+    memos,
   };
 };

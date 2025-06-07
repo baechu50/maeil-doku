@@ -8,6 +8,7 @@ import type { DifficultyLevel } from "../types/sudoku";
 
 export default function Index() {
   const [difficulty, setDifficulty] = useState<DifficultyLevel>("easy");
+
   const [initial, setInitial] = useState(() => {
     const { puzzle } = generateSudokuPuzzle(difficulty);
     return puzzle;
@@ -23,16 +24,21 @@ export default function Index() {
     setNewPuzzle,
     highlightNumber,
     highlightArea,
+    isMemoMode,
+    setIsMemoMode,
+    memos,
   } = useSudokuBoard(initial);
 
   const { conflictCells } = useSudokuValidation(board);
-  const { time, start, stop } = useTimer();
+  const { time, start, stop, reset } = useTimer();
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
+    reset();
     start();
     return () => stop();
-  }, [start, stop, difficulty]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [difficulty]);
 
   const handleNewPuzzle = () => {
     const { puzzle } = generateSudokuPuzzle(difficulty);
@@ -91,10 +97,24 @@ export default function Index() {
               return (
                 <button
                   key={`${rowIdx}-${colIdx}`}
-                  className={`${cellClasses} border-0 p-0 focus:outline-none focus:ring-0`}
+                  className={`${cellClasses} border-0 p-0 bg-transparent focus:outline-none focus:ring-0`}
                   onClick={() => handleCellSelect(rowIdx, colIdx)}
                 >
-                  {cell !== 0 ? cell : ""}
+                  {cell !== 0 ? (
+                    cell
+                  ) : (
+                    <div className="p-1 grid grid-cols-3 gap-0 text-[8px] leading-[1] w-full h-full">
+                      {Array.from({ length: 9 }, (_, idx) => (
+                        <span
+                          key={idx}
+                          className="flex items-center justify-center h-full w-full"
+                          style={{ minHeight: "1em", minWidth: "1em" }}
+                        >
+                          {memos[rowIdx][colIdx][idx] ? idx + 1 : ""}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </button>
               );
             })
@@ -132,9 +152,10 @@ export default function Index() {
         </button>
         <button
           className="px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200"
+          onClick={() => setIsMemoMode(!isMemoMode)}
           disabled={isPaused}
         >
-          메모
+          {isMemoMode ? "메모 on" : "메모 off"}
         </button>
         <button
           className="px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200"
