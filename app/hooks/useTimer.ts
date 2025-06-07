@@ -1,27 +1,27 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 export const useTimer = () => {
   const [seconds, setSeconds] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const start = () => {
+  const start = useCallback(() => {
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
       setSeconds((prev) => prev + 1);
     }, 1000);
-  };
+  }, []);
 
-  const stop = () => {
+  const stop = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
-  };
+  }, []);
 
-  const reset = () => {
+  const reset = useCallback(() => {
     stop();
     setSeconds(0);
-  };
+  }, [stop]);
 
   useEffect(() => {
     return () => {

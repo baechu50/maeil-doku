@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { generateSudokuPuzzle } from "../lib/sudokuGenerator";
 import { useSudokuBoard } from "../hooks/useSudokuBoard";
 import { useSudokuValidation } from "../hooks/useSudokuValidation";
@@ -29,6 +29,11 @@ export default function Index() {
   const { time, start, stop } = useTimer();
   const [isPaused, setIsPaused] = useState(false);
 
+  useEffect(() => {
+    start();
+    return () => stop();
+  }, [start, stop, difficulty]);
+
   const handleNewPuzzle = () => {
     const { puzzle } = generateSudokuPuzzle(difficulty);
     setInitial(puzzle);
@@ -57,21 +62,12 @@ export default function Index() {
           <div className="text-xl font-mono">{time}</div>
           <button
             onClick={() => {
-              start();
-              setIsPaused(false);
+              setIsPaused(!isPaused);
+              isPaused ? start() : stop();
             }}
             className="px-2 py-1 text-sm rounded border bg-gray-100 hover:bg-gray-200"
           >
-            시작
-          </button>
-          <button
-            onClick={() => {
-              stop();
-              setIsPaused(true);
-            }}
-            className="px-2 py-1 text-sm rounded border bg-gray-100 hover:bg-gray-200"
-          >
-            정지
+            {isPaused ? "▶" : "⏸"}
           </button>
         </div>
       </div>
@@ -105,7 +101,7 @@ export default function Index() {
           )}
         </div>
         {isPaused && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black flex items-center justify-center">
             <span className="text-white text-xl">일시정지</span>
           </div>
         )}
