@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 export const useTimer = () => {
   const [seconds, setSeconds] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const start = useCallback(() => {
@@ -9,27 +10,31 @@ export const useTimer = () => {
     intervalRef.current = setInterval(() => {
       setSeconds((prev) => prev + 1);
     }, 1000);
+    setIsPaused(false);
   }, []);
 
-  const stop = useCallback(() => {
+  const pause = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+    setIsPaused(true);
   }, []);
 
   const reset = useCallback(() => {
-    stop();
+    pause();
     setSeconds(0);
-  }, [stop]);
+    start();
+  }, [pause, start]);
 
   useEffect(() => {
+    start(); // 컴포넌트 마운트 시 자동 시작
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, []);
+  }, [start]);
 
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
@@ -41,8 +46,9 @@ export const useTimer = () => {
 
   return {
     time: formatTime(seconds),
+    isPaused,
     start,
-    stop,
+    pause,
     reset,
   };
 };
