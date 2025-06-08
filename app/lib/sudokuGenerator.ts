@@ -15,13 +15,23 @@ const isValidPlacement = (
   col: number,
   num: number
 ): boolean => {
-  const blockRow = Math.floor(row / 3) * 3;
-  const blockCol = Math.floor(col / 3) * 3;
+  // Check row
+  for (let x = 0; x < BOARD_SIZE; x++) {
+    if (board[row][x] === num) return false;
+  }
 
-  for (let i = 0; i < BOARD_SIZE; i++) {
-    if (board[row][i] === num || board[i][col] === num) return false;
-    if (board[blockRow + Math.floor(i / 3)][blockCol + (i % 3)] === num)
-      return false;
+  // Check column
+  for (let x = 0; x < BOARD_SIZE; x++) {
+    if (board[x][col] === num) return false;
+  }
+
+  // Check 3x3 box
+  const startRow = Math.floor(row / 3) * 3;
+  const startCol = Math.floor(col / 3) * 3;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (board[i + startRow][j + startCol] === num) return false;
+    }
   }
 
   return true;
@@ -30,15 +40,17 @@ const isValidPlacement = (
 const fillBoard = (board: SudokuBoard): boolean => {
   for (let row = 0; row < BOARD_SIZE; row++) {
     for (let col = 0; col < BOARD_SIZE; col++) {
-      if (board[row][col] !== 0) continue;
-      const nums = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-      for (const num of nums) {
-        if (!isValidPlacement(board, row, col, num)) continue;
-        board[row][col] = num;
-        if (fillBoard(board)) return true;
-        board[row][col] = 0; // backtrack
+      if (board[row][col] === 0) {
+        const nums = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        for (const num of nums) {
+          if (isValidPlacement(board, row, col, num)) {
+            board[row][col] = num;
+            if (fillBoard(board)) return true;
+            board[row][col] = 0;
+          }
+        }
+        return false;
       }
-      return false;
     }
   }
   return true;
@@ -76,7 +88,7 @@ export const generateSudokuPuzzle = (
   solution: SudokuBoard;
 } => {
   const solution = createEmptyBoard();
-  fillBoard(solution);
+  const success = fillBoard(solution);
   const puzzle = removeCells(solution, SUDOKU_DIFFICULTY[difficulty]);
   return { puzzle, solution };
 };
