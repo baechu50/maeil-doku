@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { generateSudokuPuzzle } from "../lib/sudokuGenerator";
-import { useSudokuBoard } from "../hooks/useSudokuBoard";
-import { useSudokuValidation } from "../hooks/useSudokuValidation";
-import { getCellClasses, getNumberPadClass } from "../lib/styleUtils";
-import type { DifficultyLevel, SudokuBoard } from "../types/sudoku";
-import Timer from "../components/Timer";
+import { generateSudokuPuzzle } from "./lib/sudokuGenerator";
+import { useSudokuBoard } from "./hooks/useSudokuBoard";
+import { useSudokuValidation } from "./hooks/useSudokuValidation";
+import { getCellClasses, getNumberPadClass } from "./lib/styleUtils";
+import type { DifficultyLevel, SudokuBoard } from "./types/sudoku";
+import Timer from "./components/Timer";
 
-export default function Index() {
+export default function App() {
   const [difficulty, setDifficulty] = useState<DifficultyLevel>("easy");
   const [currentSolution, setCurrentSolution] = useState<SudokuBoard>(() => 
     Array(9).fill(null).map(() => Array(9).fill(0))

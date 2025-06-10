@@ -1,5 +1,5 @@
 import { SudokuBoard } from "../types/sudoku";
-import { SUDOKU_DIFFICULTY, BOARD_SIZE } from "../lib/constants";
+import { SUDOKU_DIFFICULTY, BOARD_SIZE } from "./constants";
 
 type Difficulty = keyof typeof SUDOKU_DIFFICULTY;
 
