@@ -1,5 +1,6 @@
 import { memo, useEffect } from 'react';
 import { useTimer } from '../hooks/useTimer';
+import { formatTime } from '../lib/utils';
 
 interface TimerProps {
   difficulty: string;
@@ -27,7 +28,7 @@ const Timer = memo(({ difficulty, onPauseChange }: TimerProps) => {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="text-xl font-mono">{time}</div>
+      <div className="text-xl font-mono">{formatTime(time)}</div>
       <button
         onClick={handleClick}
         className="px-2 py-1 text-sm rounded border bg-gray-100 hover:bg-gray-200"
