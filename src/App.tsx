@@ -71,11 +71,8 @@ export default function App() {
 
       {/* 보드 */}
       <div className="relative">
-        {isPaused && (
-          <div className="absolute inset-0 flex items-center justify-center bg-orange-100 z-10">
-            <div className="text-lg font-medium text-gray-700">타이머 중지</div>
-          </div>
-        )}
+        {isPaused && (<BoardPaused />)}
+        {isBoardFull && (<BoardResult time={timeRef.current} usedHints={3-hintCount} difficulty={difficulty} onRestart={handleNewPuzzle} />)}
         <div className="grid grid-cols-9 gap-px bg-black w-fit mx-auto p-1">
           {board.map((row, rowIdx) =>
             row.map((cell, colIdx) => {
@@ -162,6 +159,40 @@ export default function App() {
           {hintCount > 0 ? `힌트 ${hintCount}/3` : "힌트 없음"}
         </button>
       </div>
+    </div>
+  );
+}
+
+function BoardResult({
+  time,
+  usedHints,
+  difficulty,
+  onRestart,
+}: {
+  time: number;
+  usedHints: number;
+  difficulty: string;
+  onRestart: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+      <div className="bg-white p-8 rounded shadow-lg text-center">
+        <h2 className="text-xl font-bold mb-4">🎉 축하합니다! 퍼즐을 완성했어요!</h2>
+        <div className="mb-2">난이도: {difficulty}</div>
+        <div className="mb-2">걸린 시간: {Math.floor(time / 60)}분 {time % 60}초</div>
+        <div className="mb-4">사용한 힌트: {usedHints}개</div>
+        <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={onRestart}>
+          새 게임 시작
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function BoardPaused() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-orange-100 z-10">
+      <div className="text-lg font-medium text-gray-700">타이머 중지</div>
     </div>
   );
 }
