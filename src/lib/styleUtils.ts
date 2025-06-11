@@ -29,7 +29,7 @@ const getBackgroundClass = (
 };
 
 export const getNumberPadClass = (
-  board: SudokuBoard,
+  board: number[][],
   number: number
 ): string => {
   const count = board.flat().filter((cell) => cell === number).length;

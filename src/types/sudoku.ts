@@ -1,9 +1,9 @@
-export type SudokuBoard = number[][];
 export type DifficultyLevel = "easy" | "medium" | "hard";
 
-export interface GetSudokuResponse {
-  board: SudokuBoard;
-}
+export type SudokuBoard = {
+  board: number[][];
+  memos: boolean[][][];
+};
 
 export interface PostSudokuRequest {
   board: SudokuBoard;

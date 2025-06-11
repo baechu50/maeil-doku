@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { generateSudokuPuzzle } from "./lib/sudokuGenerator";
+import {
+  generateSudokuPuzzle,
+  wrapSudokuBoard,
+  createEmptyBoard
+} from "./lib/sudokuGenerator";
 import { useSudokuBoard } from "./hooks/useSudokuBoard";
 import { useSudokuValidation } from "./hooks/useSudokuValidation";
 import { getCellClasses, getNumberPadClass } from "./lib/styleUtils";
@@ -8,9 +12,7 @@ import Timer from "./components/Timer";
 
 export default function App() {
   const [difficulty, setDifficulty] = useState<DifficultyLevel>("easy");
-  const [currentSolution, setCurrentSolution] = useState<SudokuBoard>(() => 
-    Array(9).fill(null).map(() => Array(9).fill(0))
-  );
+  const [currentSolution, setCurrentSolution] = useState<SudokuBoard>(() => wrapSudokuBoard(createEmptyBoard()));
   const [isPaused, setIsPaused] = useState(false);
 
   const [initial, setInitial] = useState(() => {
@@ -21,6 +23,7 @@ export default function App() {
 
   const {
     board,
+    memos,
     initialBoard,
     selectedCell,
     handleNumberInput,
@@ -31,11 +34,10 @@ export default function App() {
     highlightArea,
     isMemoMode,
     setIsMemoMode,
-    memos,
     handleHint,
   } = useSudokuBoard(initial, currentSolution);
 
-  const { conflictCells } = useSudokuValidation(board);
+  const { conflictCells, isBoardFull } = useSudokuValidation(board);
   const [hintCount, setHintCount] = useState(3);
 
   const handleNewPuzzle = () => {
@@ -84,7 +86,7 @@ export default function App() {
                 selectedCell,
                 highlightNumber,
                 highlightArea,
-                initialBoard,
+                initialBoard.board,
                 conflictCells
               ).join(" ");
 
