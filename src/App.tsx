@@ -39,6 +39,8 @@ export default function App() {
     isMemoMode,
     setIsMemoMode,
     handleHint,
+    undo,
+    redo, // 추가
   } = useSudokuBoard(initial, currentSolution);
 
   const { conflictCells, isBoardFull } = useSudokuValidation(board);
@@ -147,7 +149,7 @@ export default function App() {
               isPaused ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => !isPaused && handleNumberInput(num)}
-            disabled={isPaused}
+            disabled={isPaused || isBoardFull}
           >
             {num}
           </button>
@@ -158,25 +160,43 @@ export default function App() {
       <div className="flex justify-center gap-4 mt-4">
         <button
           className={`px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200 ${
-            isPaused ? "opacity-50 cursor-not-allowed" : ""
+            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={() => !isPaused && undo()}
+          disabled={isPaused || isBoardFull}
+        >
+          되돌리기
+        </button>
+        <button
+          className={`px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200 ${
+            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={() => !isPaused && redo()}
+          disabled={isPaused || isBoardFull}
+        >
+          다시 실행
+        </button>
+        <button
+          className={`px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200 ${
+            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => !isPaused && handleCellClear()}
-          disabled={isPaused}
+          disabled={isPaused || isBoardFull}
         >
           삭제
         </button>
         <button
           className={`px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200 ${
-            isPaused ? "opacity-50 cursor-not-allowed" : ""
+            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => !isPaused && setIsMemoMode(!isMemoMode)}
-          disabled={isPaused}
+          disabled={isPaused || isBoardFull}
         >
           {isMemoMode ? "메모 on" : "메모 off"}
         </button>
         <button
           className={`px-4 py-2 rounded border text-sm bg-yellow-100 hover:bg-yellow-200 ${
-            isPaused ? "opacity-50 cursor-not-allowed" : ""
+            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => {
             if (!isPaused && hintCount > 0) {
@@ -184,7 +204,7 @@ export default function App() {
               setHintCount(hintCount - 1);
             }
           }}
-          disabled={hintCount === 0 || isPaused}
+          disabled={hintCount === 0 || isPaused || isBoardFull}
         >
           {hintCount > 0 ? `힌트 ${hintCount}/3` : "힌트 없음"}
         </button>
