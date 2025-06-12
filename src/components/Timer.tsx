@@ -5,9 +5,11 @@ import { formatTime } from '../lib/utils';
 interface TimerProps {
   difficulty: string;
   onPauseChange: (isPaused: boolean) => void;
+  onTimeUpdate?: (time: number) => void;
 }
 
-const Timer = memo(({ difficulty, onPauseChange }: TimerProps) => {
+const Timer = memo((props: TimerProps) => {
+  const { difficulty, onPauseChange, onTimeUpdate } = props;
   const { time, isPaused, start, pause, reset } = useTimer();
 
   useEffect(() => {
@@ -17,6 +19,12 @@ const Timer = memo(({ difficulty, onPauseChange }: TimerProps) => {
   useEffect(() => {
     onPauseChange(isPaused);
   }, [isPaused, onPauseChange]);
+
+  useEffect(() => {
+    if (onTimeUpdate) {
+      onTimeUpdate(time);
+    }
+  }, [time, onTimeUpdate]);
 
   const handleClick = () => {
     if (isPaused) {
