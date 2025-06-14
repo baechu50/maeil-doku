@@ -6,7 +6,6 @@ export function useRecords() {
   const supabase = useSupabaseClient();
   const [loading, setLoading] = useState(false);
 
-  // ✅ 기록 저장 (중복 시 업데이트)
   const saveRecord = async (record: SudokuRecord): Promise<{ data: any; error: any }> => {
     setLoading(true);
     const { data, error } = await supabase
@@ -25,24 +24,50 @@ export function useRecords() {
     return { data, error: null };
   };
 
-  // ✅ 기록 조회 (user_id 기준)
-  const fetchRecords = async (userId: string): Promise<{ data: SudokuRecord[] | null; error: any }> => {
+  // 날짜 범위 & 단일 날짜 처리
+  const fetchRecordsByDate = async (
+    userId: string,
+    startDate: string,
+    endDate?: string
+  ): Promise<{ data: SudokuRecord[] | null; error: any }> => {
     setLoading(true);
-    const { data, error } = await supabase
+  
+    let query = supabase
       .from("records")
       .select("*")
-      .eq("user_id", userId)
-      .order("solved_at", { ascending: false });
+      .eq("user_id", userId);
 
+    query = endDate
+    ? query.gte("solved_at", startDate).lte("solved_at", endDate)
+    : query.eq("solved_at", startDate);
+  
+    const { data, error } = await query.order("solved_at", { ascending: false });
+  
     setLoading(false);
-
+  
     if (error) {
       console.error("Error fetching records:", error.message);
       return { data: null, error };
     }
-
+  
     return { data: data as SudokuRecord[], error: null };
   };
 
-  return { saveRecord, fetchRecords, loading };
+  const fetchAverageTimeByDifficulty = async (userId: string) => {
+    setLoading(true);
+  
+    const { data, error } = await supabase
+      .rpc("get_average_time_by_difficulty", { user_id: userId });
+  
+    setLoading(false);
+  
+    if (error) {
+      console.error("Error fetching average times:", error.message);
+      return { data: null, error };
+    }
+  
+    return { data, error: null };
+  };
+
+  return { saveRecord, fetchRecordsByDate, fetchAverageTimeByDifficulty, loading };
 };
