@@ -1,13 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { supabase } from './lib/supabaseClient';
 
-import './index.css' // Tailwind 등을 사용하는 경우
+import "./index.css";
 
-const root = document.getElementById('root') as HTMLElement
+const root = document.getElementById("root") as HTMLElement;
 
 ReactDOM.createRoot(root).render(
   <React.StrictMode>
-    <App />
+    <SessionContextProvider supabaseClient={supabase}>
+      <App />
+    </SessionContextProvider>
   </React.StrictMode>
-)
+);
