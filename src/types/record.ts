@@ -1,8 +1,11 @@
 import { DifficultyLevel } from "./sudoku";
 
 export interface SudokuRecord {
-  date: string;
+  id: string;
+  user_id: string;
+  solved_at: string;
   difficulty: DifficultyLevel;
-  timeInSeconds: number;
-  hintsUsed: number;
+  time_seconds: number;
+  hints_used: number;
+  board_hash: string;
 }
