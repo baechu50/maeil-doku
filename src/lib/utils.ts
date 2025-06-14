@@ -5,3 +5,7 @@ export function formatTime(totalSeconds: number): string {
       .toString()
       .padStart(2, "0")}`;
   }
+
+  export function hashBoard(board: number[][]): string {
+    return board.flat().join("");
+  }
