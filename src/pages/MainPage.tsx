@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "@supabase/auth-helpers-react";
 
 export default function MainPage() {
-    const user = useUser();
+  const user = useUser();
 
   return (
     <div className="flex flex-col items-center justify-center p-8 space-y-6">
@@ -17,9 +17,7 @@ export default function MainPage() {
       </Link>
 
       {user ? (
-        <div className="text-sm text-gray-700">
-          환영합니다, {user.user_metadata.full_name}님!{" "}
-        </div>
+        <div className="text-sm text-gray-700">환영합니다, {user.user_metadata.full_name}님! </div>
       ) : (
         <div className="text-sm text-gray-700">
           기록을 저장하고 싶다면{" "}

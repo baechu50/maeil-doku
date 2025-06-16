@@ -8,7 +8,13 @@ export function createEmptyBoard(): number[][] {
 export function wrapSudokuBoard(board: number[][]): SudokuBoard {
   return {
     board,
-    memos: Array(9).fill(null).map(() => Array(9).fill(null).map(() => Array(9).fill(false)))
+    memos: Array(9)
+      .fill(null)
+      .map(() =>
+        Array(9)
+          .fill(null)
+          .map(() => Array(9).fill(false))
+      ),
   };
 }
 
@@ -16,12 +22,7 @@ function cloneBoard(board: number[][]): number[][] {
   return board.map((row) => [...row]);
 }
 
-function isValidPlacement(
-  board: number[][],
-  row: number,
-  col: number,
-  num: number
-): boolean {
+function isValidPlacement(board: number[][], row: number, col: number, num: number): boolean {
   for (let x = 0; x < BOARD_SIZE; x++) {
     if (board[row][x] === num) return false;
   }
@@ -79,9 +80,10 @@ function removeCells(board: number[][], removeCount: number): number[][] {
   return result;
 }
 
-export function generateSudokuPuzzle(
-  difficulty: DifficultyLevel
-): { puzzle: SudokuBoard; solution: SudokuBoard } {
+export function generateSudokuPuzzle(difficulty: DifficultyLevel): {
+  puzzle: SudokuBoard;
+  solution: SudokuBoard;
+} {
   const solutionArr = createEmptyBoard();
   fillBoard(solutionArr);
   const puzzleArr = removeCells(solutionArr, SUDOKU_DIFFICULTY[difficulty]);
@@ -89,4 +91,4 @@ export function generateSudokuPuzzle(
     puzzle: wrapSudokuBoard(puzzleArr),
     solution: wrapSudokuBoard(solutionArr),
   };
-} 
+}
