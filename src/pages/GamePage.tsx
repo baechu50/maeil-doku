@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react";
 import { useRef } from "react";
-import {
-  generateSudokuPuzzle,
-  wrapSudokuBoard,
-  createEmptyBoard,
-} from "../lib/sudokuGenerator"; 
+import { generateSudokuPuzzle, wrapSudokuBoard, createEmptyBoard } from "../lib/sudokuGenerator";
 import { useSudokuBoard } from "../hooks/useSudokuBoard";
 import { useSudokuValidation } from "../hooks/useSudokuValidation";
 import { getCellClasses, getNumberPadClass } from "../lib/styleUtils";
 import type { DifficultyLevel, SudokuBoard } from "../types/sudoku";
 import Timer from "../components/Timer";
-import { useUser } from '@supabase/auth-helpers-react';
+import { useUser } from "@supabase/auth-helpers-react";
 import { useRecords } from "@/hooks/useRecords";
 import { hashBoard } from "@/lib/utils";
 
@@ -51,7 +47,7 @@ export default function GamePage() {
 
   const user = useUser();
   const { saveRecord } = useRecords();
-  
+
   const handleNewPuzzle = () => {
     const { puzzle, solution } = generateSudokuPuzzle(difficulty);
     setInitial(puzzle);
@@ -89,7 +85,6 @@ export default function GamePage() {
     save();
   }, [isBoardFull]);
 
-
   return (
     <div className="p-6 space-y-6 text-center">
       <div className="space-y-2">
@@ -106,12 +101,13 @@ export default function GamePage() {
             <option value="medium">보통</option>
             <option value="hard">어려움</option>
           </select>
-          {!isBoardFull &&           
-          <Timer
-            difficulty={difficulty}
-            onPauseChange={setIsPaused}
-            onTimeUpdate={(t) => (timeRef.current = t)}
-          />}
+          {!isBoardFull && (
+            <Timer
+              difficulty={difficulty}
+              onPauseChange={setIsPaused}
+              onTimeUpdate={(t) => (timeRef.current = t)}
+            />
+          )}
         </div>
       </div>
 
@@ -258,9 +254,7 @@ function BoardResult({
 }) {
   return (
     <div className="relative z-10 mt-6 p-6 border rounded-lg bg-white shadow-md text-left space-y-4 w-fit mx-auto">
-      <h2 className="text-2xl font-bold text-center text-green-700">
-        🎉 퍼즐 완료!
-      </h2>
+      <h2 className="text-2xl font-bold text-center text-green-700">🎉 퍼즐 완료!</h2>
       <div className="text-gray-700">
         <p>
           <strong>난이도:</strong> {difficulty}
