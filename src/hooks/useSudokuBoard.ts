@@ -47,9 +47,7 @@ export function useSudokuBoard(initial: SudokuBoard, initialSolution: SudokuBoar
     pushToHistory(boardState);
 
     if (isMemoMode) {
-      const newMemos = boardState.memos.map((rowArr) =>
-        rowArr.map((colArr) => [...colArr])
-      );
+      const newMemos = boardState.memos.map((rowArr) => rowArr.map((colArr) => [...colArr]));
       newMemos[row][col][num - 1] = !newMemos[row][col][num - 1];
       setBoardState({
         ...boardState,
