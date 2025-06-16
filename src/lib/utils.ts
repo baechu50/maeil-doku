@@ -49,15 +49,16 @@ export function getMonthlyCalendarMap(
     calendarMap[dateStr] = { easy: [], medium: [], hard: [] };
   }
 
-  // 각 기록을 날짜+난이도 기준으로 가장 빠른 기록으로 덮어쓰기
+  // 각 날짜+난이도에 대해 가장 빠른 기록만 저장
   for (const record of records) {
-    const { solved_at: date, difficulty } = record;
-    const current = calendarMap[date]?.[difficulty];
+    const { solved_at: date, difficulty, time_seconds } = record;
 
-    if (calendarMap[date]) {
-      calendarMap[date][difficulty] = getFastestRecord([...(current ?? []), record])
-        ? [record]
-        : [];
+    if (!calendarMap[date]) continue;
+
+    const current = calendarMap[date][difficulty][0];
+
+    if (!current || time_seconds < current.time_seconds) {
+      calendarMap[date][difficulty] = [record];
     }
   }
 
