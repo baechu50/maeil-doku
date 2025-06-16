@@ -284,7 +284,7 @@ export default function MyPage() {
                   const calendarStartDate = new Date(firstDay);
                   calendarStartDate.setDate(firstDay.getDate() - startDayOfWeek + i);
 
-                  const dateStr = calendarStartDate.toISOString().split("T")[0];
+                  const dateStr = calendarStartDate.toLocaleDateString("sv-SE");
                   const records = monthlyRecords[dateStr];
                   const isToday = dateStr === today;
                   const isCurrentMonth = calendarStartDate.getMonth() === yearandMonth[1];
@@ -349,7 +349,7 @@ export default function MyPage() {
                   <div className="font-semibold mb-2 text-center">{hoveredDate.day}일 기록</div>
                   {(() => {
                     const targetDate = new Date(yearandMonth[0], yearandMonth[1], hoveredDate.day);
-                    const dateStr = targetDate.toISOString().split("T")[0];
+                    const dateStr = targetDate.toLocaleDateString("sv-SE");
                     const dateRecord = monthlyRecords[dateStr];
                     if (!dateRecord) return <p className="text-gray-500 text-center">기록 없음</p>;
 
