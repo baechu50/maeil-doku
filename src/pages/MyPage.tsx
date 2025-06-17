@@ -7,8 +7,6 @@ import { getStreakCount, getFastestRecord, formatTime, getMonthlyCalendarMap } f
 import {
   Calendar,
   Clock,
-  Trophy,
-  Zap,
   Target,
   TrendingUp,
   Brain,
@@ -108,28 +106,27 @@ export default function MyPage() {
   };
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen p-4 pt-36">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* 헤더 */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold text-gray-900">수도쿠 대시보드</h1>
-          <p className="text-gray-600">반갑습니다 {user?.user_metadata.name || "사용자"}님</p>
+          <p className="text-gray-600">
+            반갑습니다 {user?.user_metadata.name || "사용자"}님, 오늘의 기록을 확인해보세요!
+          </p>
         </div>
 
         {/* 연속 플레이 & 동기부여 메시지 */}
-        <Card className="bg-gradient-to-r from-orange-400 to-pink-400 text-white">
+        <Card className="bg-[#7E24FD] text-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <Zap className="h-8 w-8" />
                 <div>
-                  <h3 className="text-xl font-bold">🔥 {streak}일 연속</h3>
-                  <p className="text-orange-100">연속 플레이 중!</p>
+                  <h3 className="text-xl font-bold">🔥 {streak}일 연속 플레이중 🔥</h3>
                 </div>
               </div>
-              <Trophy className="h-12 w-12 text-orange-200" />
             </div>
-            <p className="mt-4 text-sm text-orange-100">
+            <p className="text-sm text-orange-100 mt-2">
               &ldquo;계속해서 매일 플레이하며 실력을 쌓아보세요!&rdquo;
             </p>
           </CardContent>
@@ -155,7 +152,7 @@ export default function MyPage() {
                         {level === "easy" ? "초급" : level === "medium" ? "중급" : "고급"}
                       </h4>
                       {record ? (
-                        <Badge variant="default" className="bg-green-500">
+                        <Badge variant="default" className="bg-green-300">
                           완료
                         </Badge>
                       ) : (
@@ -165,8 +162,8 @@ export default function MyPage() {
                     {record && (
                       <div className="space-y-2">
                         <div className="flex items-center space-x-2">
-                          <Clock className="h-5 w-5 text-blue-600" />
-                          <span className="text-2xl font-bold text-blue-600">
+                          <Clock className="h-5 w-5 text-[#7E24FD]" />
+                          <span className="text-2xl font-bold text-[#7E24FD]">
                             {formatTime(record.time_seconds)}
                           </span>
                         </div>
