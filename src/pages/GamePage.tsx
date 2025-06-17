@@ -63,7 +63,6 @@ export default function GamePage() {
   }, [difficulty, handleNewPuzzle]);
 
   useEffect(() => {
-    console.log("🎯 useEffect 실행됨", { isBoardFull, user });
     if (!isBoardFull || !user) return;
 
     const save = async () => {
@@ -79,8 +78,6 @@ export default function GamePage() {
 
       if (error) {
         console.error("❌ 기록 저장 실패:", error.message);
-      } else {
-        console.log("✅ 기록 저장 성공");
       }
     };
 
