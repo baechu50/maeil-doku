@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { generateSudokuPuzzle, wrapSudokuBoard, createEmptyBoard } from "../lib/sudokuGenerator";
 import { useSudokuBoard } from "../hooks/useSudokuBoard";
 import { useSudokuValidation } from "../hooks/useSudokuValidation";
@@ -9,6 +8,9 @@ import Timer from "../components/Timer";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRecords } from "@/hooks/useRecords";
 import { hashBoard } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Redo2, Undo2, Trash2, SquarePen, Lightbulb } from "lucide-react";
 
 export default function GamePage() {
   const [difficulty, setDifficulty] = useState<DifficultyLevel>("easy");
@@ -48,17 +50,17 @@ export default function GamePage() {
   const user = useUser();
   const { saveRecord } = useRecords();
 
-  const handleNewPuzzle = () => {
+  const handleNewPuzzle = useCallback(() => {
     const { puzzle, solution } = generateSudokuPuzzle(difficulty);
     setInitial(puzzle);
     setCurrentSolution(solution);
     setNewPuzzle(puzzle, solution);
     setHintCount(3);
-  };
+  }, [difficulty, setNewPuzzle]);
 
   useEffect(() => {
     handleNewPuzzle();
-  }, [difficulty]);
+  }, [difficulty, handleNewPuzzle]);
 
   useEffect(() => {
     console.log("🎯 useEffect 실행됨", { isBoardFull, user });
@@ -68,7 +70,7 @@ export default function GamePage() {
       const { error } = await saveRecord({
         id: crypto.randomUUID(),
         user_id: user.id,
-        solved_at: new Date().toISOString().slice(0, 10),
+        solved_at: new Date().toLocaleDateString("sv-SE"),
         difficulty,
         time_seconds: timeRef.current,
         hints_used: 3 - hintCount,
@@ -83,13 +85,14 @@ export default function GamePage() {
     };
 
     save();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isBoardFull]);
 
   return (
-    <div className="p-6 space-y-6 text-center">
-      <div className="space-y-2">
-        <h1 className="text-l font-bold">오늘의 수도쿠를 풀어봐요!</h1>
-        <div className="flex items-center justify-center gap-2">
+    <div className="pt-24 sm:pt-36 px-1 sm:px-6 space-y-4 sm:space-y-6 text-center mb-6">
+      <div className="space-y-3">
+        <h1 className="text-l font-bold">🦆 오늘의 수도쿠를 풀어봐요 🦆</h1>
+        <div className="flex items-center justify-center gap-6">
           <select
             value={difficulty}
             onChange={(e) => {
@@ -122,7 +125,7 @@ export default function GamePage() {
             onRestart={handleNewPuzzle}
           />
         ) : (
-          <div className="grid grid-cols-9 gap-px bg-black w-fit mx-auto p-1">
+          <div className="grid grid-cols-9 gap-0 bg-black w-fit mx-auto p-1">
             {board.map((row, rowIdx) =>
               row.map((cell, colIdx) => {
                 const cellClasses = getCellClasses(
@@ -139,7 +142,7 @@ export default function GamePage() {
                 return (
                   <button
                     key={`${rowIdx}-${colIdx}`}
-                    className={`${cellClasses} border-0 p-0 bg-transparent focus:outline-none focus:ring-0 ${
+                    className={`${cellClasses} p-0 bg-transparent border-black border focus:outline-none focus:ring-0 ${
                       isPaused ? "cursor-not-allowed" : ""
                     }`}
                     onClick={() => !isPaused && handleCellSelect(rowIdx, colIdx)}
@@ -169,61 +172,73 @@ export default function GamePage() {
       </div>
 
       {/* 숫자 패드 */}
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center gap-1 sm:gap-2 w-[calc(100vw-2rem)] sm:w-[350px] mx-auto">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-          <button
+          <Button
             key={num}
-            className={`${getNumberPadClass(board, num)} ${
+            variant="outline"
+            size="icon"
+            className={`${getNumberPadClass(board, num)} w-7 h-7 sm:w-10 sm:h-10 text-sm sm:text-lg ${
               isPaused ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => !isPaused && handleNumberInput(num)}
             disabled={isPaused || isBoardFull}
           >
             {num}
-          </button>
+          </Button>
         ))}
       </div>
 
       {/* 추가 기능 버튼 */}
-      <div className="flex justify-center gap-4 mt-4">
-        <button
-          className={`px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200 ${
-            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+      <div className="flex flex-wrap justify-center gap-2 mt-2 w-[calc(100vw-2rem)] sm:w-[350px] mx-auto">
+        <Button
+          variant="outline"
+          size="sm"
+          className={isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}
           onClick={() => !isPaused && undo()}
           disabled={isPaused || isBoardFull}
         >
-          되돌리기
-        </button>
-        <button
-          className={`px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200 ${
-            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          <Undo2 className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className={isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}
           onClick={() => !isPaused && redo()}
           disabled={isPaused || isBoardFull}
         >
-          다시 실행
-        </button>
-        <button
-          className={`px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200 ${
-            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          <Redo2 className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className={isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}
           onClick={() => !isPaused && handleCellClear()}
           disabled={isPaused || isBoardFull}
         >
-          삭제
-        </button>
-        <button
-          className={`px-4 py-2 rounded border text-sm bg-gray-100 hover:bg-gray-200 ${
-            isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          <Trash2 className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className={`relative ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={() => !isPaused && setIsMemoMode(!isMemoMode)}
           disabled={isPaused || isBoardFull}
         >
-          {isMemoMode ? "메모 on" : "메모 off"}
-        </button>
-        <button
-          className={`px-4 py-2 rounded border text-sm bg-yellow-100 hover:bg-yellow-200 ${
+          <Badge
+            variant="default"
+            className={`absolute -top-2 -right-2 text-[10px] px-1 py-0 ${
+              isMemoMode ? "bg-green-500" : "bg-red-500"
+            }`}
+          >
+            {isMemoMode ? "on" : "off"}
+          </Badge>
+          <SquarePen className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className={`relative bg-yellow-100 hover:bg-yellow-200 ${
             isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => {
@@ -234,8 +249,14 @@ export default function GamePage() {
           }}
           disabled={hintCount === 0 || isPaused || isBoardFull}
         >
-          {hintCount > 0 ? `힌트 ${hintCount}/3` : "힌트 없음"}
-        </button>
+          <Lightbulb className="w-4 h-4" />
+          <Badge
+            variant="default"
+            className="bg-[#FCD743] absolute -top-2 -right-2 text-[10px] px-1 py-0"
+          >
+            {`${hintCount}/3`}
+          </Badge>
+        </Button>
       </div>
     </div>
   );
@@ -280,8 +301,8 @@ function BoardResult({
 
 function BoardPaused() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-orange-100 z-10">
-      <div className="text-lg font-medium text-gray-700">타이머 중지</div>
+    <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+      <div className="text-lg font-medium text-gray-700">타이머 중지 중...</div>
     </div>
   );
 }
