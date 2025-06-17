@@ -122,7 +122,7 @@ export default function GamePage() {
             onRestart={handleNewPuzzle}
           />
         ) : (
-          <div className="grid grid-cols-9 gap-0 bg-black w-fit mx-auto p-1">
+          <div className="grid grid-cols-9 gap-0 bg-gray-600 w-fit mx-auto p-0.5">
             {board.map((row, rowIdx) =>
               row.map((cell, colIdx) => {
                 const cellClasses = getCellClasses(
@@ -139,7 +139,7 @@ export default function GamePage() {
                 return (
                   <button
                     key={`${rowIdx}-${colIdx}`}
-                    className={`${cellClasses} p-0 bg-transparent border-black border focus:outline-none focus:ring-0 ${
+                    className={`${cellClasses} p-0 bg-transparent border-gray-700 border-[0.5px] focus:outline-none focus:ring-0 ${
                       isPaused ? "cursor-not-allowed" : ""
                     }`}
                     onClick={() => !isPaused && handleCellSelect(rowIdx, colIdx)}
@@ -272,7 +272,7 @@ function BoardResult({
 }) {
   return (
     <div className="relative z-10 mt-6 p-6 border rounded-lg bg-white shadow-md text-left space-y-4 w-fit mx-auto">
-      <h2 className="text-2xl font-bold text-center text-green-700">🎉 퍼즐 완료!</h2>
+      <h2 className="text-2xl font-bold text-center text-[#7E24FD]">🎉 퍼즐 완료!</h2>
       <div className="text-gray-700">
         <p>
           <strong>난이도:</strong> {difficulty}
@@ -286,7 +286,7 @@ function BoardResult({
       </div>
       <div className="text-center">
         <button
-          className="mt-2 px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+          className="mt-2 px-4 py-2 bg-[#7E24FD] text-white text-sm rounded hover:bg-purple-700"
           onClick={onRestart}
         >
           새 게임 시작
