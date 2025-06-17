@@ -16,10 +16,10 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* 로고 */}
-          <span className="text-xl font-bold text-gray-800">매일 도쿠</span>
+          <span className="text-lg font-bold text-gray-800 hidden sm:inline">매일 도쿠</span>
 
           {/* 네비게이션 */}
-          <nav className="flex items-center">
+          <nav className="flex items-center gap-1">
             <Link to="/">
               <Button variant="ghost" className="text-gray-600 hover:bg-purple-50 font-semibold">
                 홈
