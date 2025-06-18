@@ -177,7 +177,7 @@ export default function GamePage() {
             key={num}
             variant="outline"
             size="icon"
-            className={`${getNumberPadClass(board, num)} w-10 h-10 text-sm sm:text-lg ${
+            className={`${getNumberPadClass(board, num)} w-9 h-9 text-sm sm:text-lg ${
               isPaused ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => !isPaused && handleNumberInput(num)}
