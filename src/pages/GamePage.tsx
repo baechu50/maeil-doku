@@ -171,13 +171,13 @@ export default function GamePage() {
       </div>
 
       {/* 숫자 패드 */}
-      <div className="flex justify-center gap-1 sm:gap-2 w-[calc(100vw-2rem)] sm:w-[350px] mx-auto">
+      <div className="flex justify-center gap-0.5 sm:gap-2 w-[calc(100vw-2rem)] sm:w-[350px] mx-auto">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
           <Button
             key={num}
             variant="outline"
             size="icon"
-            className={`${getNumberPadClass(board, num)} w-12 h-12 sm:w-10 sm:h-10 text-sm sm:text-lg ${
+            className={`${getNumberPadClass(board, num)} w-10 h-10 text-sm sm:text-lg ${
               isPaused ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => !isPaused && handleNumberInput(num)}
@@ -189,11 +189,11 @@ export default function GamePage() {
       </div>
 
       {/* 추가 기능 버튼 */}
-      <div className="flex flex-wrap justify-center gap-6 mt-2 w-[calc(100vw-2rem)] sm:w-[350px] mx-auto">
+      <div className="flex flex-wrap justify-center gap-4 mt-2 w-[calc(100vw-2rem)] sm:w-[350px] mx-auto">
         <Button
           variant="outline"
           size="sm"
-          className={`w-12 h-12 sm:w-10 sm:h-10 text-sm sm:text-lg ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`w-10 h-10 text-sm sm:text-lg ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={() => !isPaused && undo()}
           disabled={isPaused || isBoardFull}
         >
@@ -202,7 +202,7 @@ export default function GamePage() {
         <Button
           variant="outline"
           size="sm"
-          className={`w-12 h-12 sm:w-10 sm:h-10 text-sm sm:text-lg ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`w-10 h-10 text-sm sm:text-lg ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={() => !isPaused && redo()}
           disabled={isPaused || isBoardFull}
         >
@@ -211,7 +211,7 @@ export default function GamePage() {
         <Button
           variant="outline"
           size="sm"
-          className={`w-12 h-12 sm:w-10 sm:h-10 text-sm sm:text-lg ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`w-10 h-10 text-sm sm:text-lg ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={() => !isPaused && handleCellClear()}
           disabled={isPaused || isBoardFull}
         >
@@ -220,13 +220,13 @@ export default function GamePage() {
         <Button
           variant="outline"
           size="sm"
-          className={`relative w-12 h-12 sm:w-10 sm:h-10 text-sm sm:text-lg ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`relative w-10 h-10 text-sm sm:text-lg ${isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={() => !isPaused && setIsMemoMode(!isMemoMode)}
           disabled={isPaused || isBoardFull}
         >
           <Badge
             variant="default"
-            className={`absolute -top-4 -right-4 text-[10px] px-1.5 py-0 rounded-full ${
+            className={`absolute -top-3 -right-3 text-[10px] px-1.5 py-0 rounded-full ${
               isMemoMode ? "bg-green-400" : "bg-red-400"
             }`}
           >
@@ -237,7 +237,7 @@ export default function GamePage() {
         <Button
           variant="outline"
           size="sm"
-          className={`relative w-12 h-12 sm:w-10 sm:h-10 text-sm sm:text-lg bg-yellow-100 hover:bg-yellow-200 ${
+          className={`relative w-10 h-10 text-sm sm:text-lg bg-yellow-100 hover:bg-yellow-200 ${
             isPaused || isBoardFull ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={() => {
@@ -251,7 +251,7 @@ export default function GamePage() {
           <Lightbulb className="w-4 h-4" />
           <Badge
             variant="default"
-            className="bg-[#FCD743] absolute -top-4 -right-4 text-[10px] px-1.5 py-0 rounded-full"
+            className="bg-[#FCD743] absolute -top-3 -right-3 text-[10px] px-1.5 py-0 rounded-full"
           >
             {`${hintCount}/3`}
           </Badge>
