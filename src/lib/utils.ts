@@ -17,11 +17,14 @@ export function hashBoard(board: number[][]): string {
 }
 
 export function getStreakCount(records: SudokuRecord[]): number {
-  const playedDates = new Set(records.map((r) => r.solved_at));
+  const playedDates = new Set(
+    records.map((r) => new Date(r.solved_at).toLocaleDateString("sv-SE"))
+  );
+
   let count = 0;
   const date = new Date();
 
-  while (playedDates.has(date.toISOString().slice(0, 10))) {
+  while (playedDates.has(date.toLocaleDateString("sv-SE"))) {
     count++;
     date.setDate(date.getDate() - 1);
   }
