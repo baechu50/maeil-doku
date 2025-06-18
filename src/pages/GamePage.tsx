@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { generateSudokuPuzzle, wrapSudokuBoard, createEmptyBoard } from "../lib/sudokuGenerator";
 import { useSudokuBoard } from "../hooks/useSudokuBoard";
 import { useSudokuValidation } from "../hooks/useSudokuValidation";
-import { getCellClasses, getNumberPadClass } from "../lib/styleUtils";
+import { getCellClasses, getNumberPadClass, getMemoClass } from "../lib/styleUtils";
 import type { DifficultyLevel, SudokuBoard } from "../types/sudoku";
 import Timer from "../components/Timer";
 import { useUser } from "@supabase/auth-helpers-react";
@@ -152,7 +152,9 @@ export default function GamePage() {
                         {Array.from({ length: 9 }, (_, idx) => (
                           <span
                             key={idx}
-                            className="flex items-center justify-center h-full w-full text-orange-500"
+                            className={`flex items-center justify-center h-full w-full ${getMemoClass(
+                              idx
+                            )}`}
                             style={{ minHeight: "1em", minWidth: "1em" }}
                           >
                             {memos[rowIdx][colIdx][idx] ? idx + 1 : ""}

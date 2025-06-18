@@ -1,5 +1,3 @@
-import { SudokuBoard } from "../types/sudoku";
-
 const getTextClass = (isFixed: boolean, isUserInput: boolean, isConflictCell: boolean): string => {
   if (isConflictCell && isUserInput) return "text-red-500";
   if (isFixed) return "text-black";
@@ -63,4 +61,16 @@ export const getCellClasses = (
     getTextClass(isFixed, isUserInput, isConflictCell),
     getBackgroundClass(isSelected, isConflictCell, isUserInput, isSameNumber, isHighlight),
   ];
+};
+
+export const getMemoClass = (number: number): string => {
+  if (number === 0) return "text-red-500";
+  if (number === 1) return "text-orange-500";
+  if (number === 2) return "text-yellow-500";
+  if (number === 3) return "text-green-500";
+  if (number === 4) return "text-blue-500";
+  if (number === 5) return "text-indigo-500";
+  if (number === 6) return "text-purple-500";
+  if (number === 7) return "text-pink-500";
+  return "text-gray-500";
 };
