@@ -2,7 +2,12 @@ import { supabase } from "@/lib/supabaseClient";
 
 export default function LoginPage() {
   const handleLogin = async (provider: "google" | "kakao") => {
-    await supabase.auth.signInWithOAuth({ provider });
+    await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
   };
 
   return (
