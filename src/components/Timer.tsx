@@ -1,6 +1,7 @@
-import { memo, useEffect } from 'react';
-import { useTimer } from '../hooks/useTimer';
-import { formatTime } from '../lib/utils';
+import { memo, useEffect } from "react";
+import { useTimer } from "../hooks/useTimer";
+import { formatTime } from "../lib/utils";
+import { Play, Pause } from "lucide-react";
 
 interface TimerProps {
   difficulty: string;
@@ -41,12 +42,12 @@ const Timer = memo((props: TimerProps) => {
         onClick={handleClick}
         className="px-2 py-1 text-sm rounded border bg-gray-100 hover:bg-gray-200"
       >
-        {isPaused ? "▶" : "⏸"}
+        {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
       </button>
     </div>
   );
 });
 
-Timer.displayName = 'Timer';
+Timer.displayName = "Timer";
 
-export default Timer; 
+export default Timer;
