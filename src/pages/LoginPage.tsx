@@ -16,7 +16,7 @@ export default function LoginPage() {
       <p className="text-gray-600 text-sm">계속하려면 로그인하세요</p>
       <button
         onClick={() => handleLogin("google")}
-        className="px-24 py-2 bg-[#7E24FD] text-white rounded hover:bg-purple-600 transition"
+        className="px-4 py-2 bg-[#7E24FD] text-white rounded hover:bg-purple-600 transition"
       >
         구글로 로그인
       </button>
