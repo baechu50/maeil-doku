@@ -139,7 +139,7 @@ export default function GamePage() {
                 return (
                   <button
                     key={`${rowIdx}-${colIdx}`}
-                    className={`${cellClasses} p-0 bg-transparent border-gray-700 border-[0.5px] focus:outline-none focus:ring-0 ${
+                    className={`${cellClasses} p-0 bg-transparent focus:outline-none focus:ring-0 ${
                       isPaused ? "cursor-not-allowed" : ""
                     }`}
                     onClick={() => !isPaused && handleCellSelect(rowIdx, colIdx)}
@@ -148,7 +148,7 @@ export default function GamePage() {
                     {cell !== 0 ? (
                       cell
                     ) : (
-                      <div className="p-1 grid grid-cols-3 gap-0 text-[8px] leading-[1] w-full h-full">
+                      <div className="p-0.5 grid grid-cols-3 gap-0 text-[6px] sm:text-[8px] leading-[1] w-full h-full">
                         {Array.from({ length: 9 }, (_, idx) => (
                           <span
                             key={idx}

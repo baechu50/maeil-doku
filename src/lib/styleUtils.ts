@@ -54,10 +54,25 @@ export const getCellClasses = (
   const isUserInput = cell !== 0 && !isFixed;
   const isConflictCell = conflictCells.some(([r, c]) => r === rowIdx && c === colIdx);
 
+  // 3x3 박스 구분선 로직
+  const borderClasses = [];
+
+  // 기본 테두리
+  borderClasses.push("border border-gray-600");
+
+  // 오른쪽 두꺼운 선 (3, 6번째 열)
+  if (colIdx === 2 || colIdx === 5) {
+    borderClasses.push("border-r-2 border-gray-600");
+  }
+
+  // 아래쪽 두꺼운 선 (3, 6번째 행)
+  if (rowIdx === 2 || rowIdx === 5) {
+    borderClasses.push("border-b-2 border-gray-600");
+  }
+
   return [
-    "w-10 h-10 flex items-center justify-center text-sm cursor-pointer select-none",
-    colIdx % 3 === 2 && colIdx !== 8 ? "border-r-2 border-black" : "",
-    rowIdx % 3 === 2 && rowIdx !== 8 ? "border-b-2 border-black" : "",
+    "w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm cursor-pointer select-none",
+    ...borderClasses,
     getTextClass(isFixed, isUserInput, isConflictCell),
     getBackgroundClass(isSelected, isConflictCell, isUserInput, isSameNumber, isHighlight),
   ];
