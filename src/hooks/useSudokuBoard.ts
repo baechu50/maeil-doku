@@ -57,9 +57,35 @@ export function useSudokuBoard(initial: SudokuBoard, initialSolution: SudokuBoar
       const newBoard = boardState.board.map((r, rIdx) =>
         rIdx === row ? r.map((c, cIdx) => (cIdx === col ? num : c)) : r
       );
+
+      const newMemos = boardState.memos.map((rowArr) => rowArr.map((colArr) => [...colArr]));
+
+      for (let c = 0; c < 9; c++) {
+        if (c !== col && newMemos[row][c][num - 1]) {
+          newMemos[row][c][num - 1] = false;
+        }
+      }
+
+      for (let r = 0; r < 9; r++) {
+        if (r !== row && newMemos[r][col][num - 1]) {
+          newMemos[r][col][num - 1] = false;
+        }
+      }
+
+      const boxRow = Math.floor(row / 3) * 3;
+      const boxCol = Math.floor(col / 3) * 3;
+      for (let r = boxRow; r < boxRow + 3; r++) {
+        for (let c = boxCol; c < boxCol + 3; c++) {
+          if ((r !== row || c !== col) && newMemos[r][c][num - 1]) {
+            newMemos[r][c][num - 1] = false;
+          }
+        }
+      }
+
       setBoardState({
         ...boardState,
         board: newBoard,
+        memos: newMemos,
       });
     }
   };
