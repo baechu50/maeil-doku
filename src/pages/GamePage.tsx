@@ -146,9 +146,9 @@ export default function GamePage() {
                     disabled={isPaused}
                   >
                     {cell !== 0 ? (
-                      cell
+                      <span className="text-lg sm:text-xl">{cell}</span>
                     ) : (
-                      <div className="p-0.5 grid grid-cols-3 gap-0 text-[6px] sm:text-[8px] leading-[1] w-full h-full">
+                      <div className="p-0.5 grid grid-cols-3 gap-0 text-[8px] sm:text-[10px] leading-[1] w-full h-full">
                         {Array.from({ length: 9 }, (_, idx) => (
                           <span
                             key={idx}
@@ -177,7 +177,7 @@ export default function GamePage() {
             key={num}
             variant="outline"
             size="icon"
-            className={`${getNumberPadClass(board, num)} w-9 h-9 text-sm sm:text-lg ${
+            className={`${getNumberPadClass(board, num)} w-9 h-9 text-base sm:text-lg ${
               isPaused ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => !isPaused && handleNumberInput(num)}
