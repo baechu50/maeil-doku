@@ -56,10 +56,9 @@ export function useRecords() {
   const fetchAverageTimeByDifficulty = async (userId: string) => {
     setLoading(true);
 
-    const { data, error } = await supabase.rpc(
-      "get_average_time_by_difficulty",
-      { user_id: userId }
-    );
+    const { data, error } = await supabase.rpc("get_average_time_by_difficulty", {
+      user_id: userId,
+    });
 
     setLoading(false);
 
@@ -71,10 +70,32 @@ export function useRecords() {
     return { data, error: null };
   };
 
+  const fetchPercentileByTime = async (
+    difficulty: "easy" | "medium" | "hard",
+    timeSeconds: number
+  ): Promise<{ data: number | null; error: PostgrestError | null }> => {
+    setLoading(true);
+
+    const { data, error } = await supabase.rpc("get_percentile_by_time", {
+      difficulty_input: difficulty,
+      time_input: timeSeconds,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      console.error("Error fetching percentile:", error.message);
+      return { data: null, error };
+    }
+
+    return { data, error: null };
+  };
+
   return {
     saveRecord,
     fetchRecordsByDate,
     fetchAverageTimeByDifficulty,
+    fetchPercentileByTime,
     loading,
   };
 }

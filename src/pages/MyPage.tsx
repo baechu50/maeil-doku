@@ -29,14 +29,35 @@ const DifficultyBadge = ({ difficulty, completed }: { difficulty: string; comple
 export default function MyPage() {
   const user = useUser();
   const navigate = useNavigate();
-  const { fetchRecordsByDate, fetchAverageTimeByDifficulty } = useRecords();
+  const { fetchRecordsByDate, fetchAverageTimeByDifficulty, fetchPercentileByTime } = useRecords();
 
   const [yearandMonth, setYearandMonth] = useState<number[]>([
     new Date().getFullYear(),
     new Date().getMonth(),
   ]);
-  const [todayRecords, setTodayRecords] = useState<SudokuRecord[]>([]);
+
+  const [todayRecords, setTodayRecords] = useState<{
+    easy: SudokuRecord | null;
+    medium: SudokuRecord | null;
+    hard: SudokuRecord | null;
+  }>({
+    easy: null,
+    medium: null,
+    hard: null,
+  });
+
+  const [todayPercentiles, setTodayPercentiles] = useState<{
+    easy: number | null;
+    medium: number | null;
+    hard: number | null;
+  }>({
+    easy: null,
+    medium: null,
+    hard: null,
+  });
+
   const [monthlyRecords, setMonthlyRecords] = useState<CalendarMap>({});
+
   const [averageStats, setAverageStats] = useState<
     {
       difficulty: string;
@@ -58,18 +79,42 @@ export default function MyPage() {
       return;
     }
 
-    const firstDayofMonth = new Date(yearandMonth[0], yearandMonth[1], 1).toLocaleDateString(
-      "sv-SE"
-    );
-    const lastDayofMonth = new Date(yearandMonth[0], yearandMonth[1] + 1, 0).toLocaleDateString(
-      "sv-SE"
-    );
-
     const fetchData = async () => {
-      const todayResult = await fetchRecordsByDate(user.id, today);
-      if (todayResult.data) setTodayRecords(todayResult.data);
+      const [todayResult, avgResult, monthResult] = await Promise.all([
+        fetchRecordsByDate(user.id, today),
+        fetchAverageTimeByDifficulty(user.id),
+        fetchRecordsByDate(
+          user.id,
+          new Date(yearandMonth[0], yearandMonth[1], 1).toLocaleDateString("sv-SE"),
+          new Date(yearandMonth[0], yearandMonth[1] + 1, 0).toLocaleDateString("sv-SE")
+        ),
+      ]);
 
-      const monthResult = await fetchRecordsByDate(user.id, firstDayofMonth, lastDayofMonth);
+      // 오늘 기록
+      if (todayResult.data) {
+        const records = (["easy", "medium", "hard"] as const).reduce(
+          (acc, level) => {
+            acc[level] = getFastestRecord(todayResult.data!.filter((r) => r.difficulty === level));
+            return acc;
+          },
+          { easy: null, medium: null, hard: null } as typeof todayRecords
+        );
+        setTodayRecords(records);
+
+        const percentiles = { easy: null, medium: null, hard: null } as typeof todayPercentiles;
+        await Promise.all(
+          (["easy", "medium", "hard"] as const).map(async (level) => {
+            const record = records[level];
+            if (record) {
+              const result = await fetchPercentileByTime(level, record.time_seconds);
+              if (result.data !== null) percentiles[level] = result.data;
+            }
+          })
+        );
+        setTodayPercentiles(percentiles);
+      }
+
+      // 월간 기록
       if (monthResult.data) {
         setMonthlyRecords(
           getMonthlyCalendarMap(monthResult.data, yearandMonth[0], yearandMonth[1])
@@ -77,19 +122,13 @@ export default function MyPage() {
         setStreak(getStreakCount(monthResult.data));
       }
 
-      const avgResult = await fetchAverageTimeByDifficulty(user.id);
+      // 평균 통계
       if (avgResult.data) setAverageStats(avgResult.data);
     };
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id, yearandMonth]);
-
-  const todayByDifficulty = {
-    easy: getFastestRecord(todayRecords.filter((r) => r.difficulty === "easy")),
-    medium: getFastestRecord(todayRecords.filter((r) => r.difficulty === "medium")),
-    hard: getFastestRecord(todayRecords.filter((r) => r.difficulty === "hard")),
-  };
 
   const avgByDifficulty = {
     easy: averageStats.find((s) => s.difficulty === "easy"),
@@ -144,7 +183,7 @@ export default function MyPage() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {(["easy", "medium", "hard"] as const).map((level) => {
-                const record = todayByDifficulty[level];
+                const record = todayRecords[level];
                 return (
                   <div key={level} className="p-4 border rounded-lg">
                     <div className="flex items-center justify-between mb-2">
@@ -166,13 +205,17 @@ export default function MyPage() {
                           <span className="text-2xl font-bold text-[#7E24FD]">
                             {formatTime(record.time_seconds)}
                           </span>
+                          {todayPercentiles[level] !== null && (
+                            <span className="text-sm text-gray-600">
+                              (상위 {Math.round(todayPercentiles[level]!)}%)
+                            </span>
+                          )}
                         </div>
                         <div className="flex items-center justify-between text-xs text-gray-500">
                           <div className="flex items-center space-x-1">
                             <Brain className="h-3 w-3" />
                             <span>힌트 {record.hints_used}개</span>
                           </div>
-                          {/* 랭킹은 추후 추가 가능 */}
                         </div>
                       </div>
                     )}
@@ -313,18 +356,15 @@ export default function MyPage() {
                         <span className="font-semibold">{day}</span>
                         {records && (
                           <div className="flex space-x-0.5">
-                            <DifficultyBadge
-                              difficulty="easy"
-                              completed={records.easy.length > 0}
-                            />
-                            <DifficultyBadge
-                              difficulty="medium"
-                              completed={records.medium.length > 0}
-                            />
-                            <DifficultyBadge
-                              difficulty="hard"
-                              completed={records.hard.length > 0}
-                            />
+                            {records.easy.length > 0 && (
+                              <DifficultyBadge difficulty="easy" completed={true} />
+                            )}
+                            {records.medium.length > 0 && (
+                              <DifficultyBadge difficulty="medium" completed={true} />
+                            )}
+                            {records.hard.length > 0 && (
+                              <DifficultyBadge difficulty="hard" completed={true} />
+                            )}
                           </div>
                         )}
                       </div>
