@@ -149,7 +149,7 @@ export default function MyPage() {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* 헤더 */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-gray-900">수도쿠 대시보드</h1>
+          <h1 className="text-3xl font-bold text-gray-900">스도쿠 대시보드</h1>
           <p className="text-gray-600">
             반갑습니다 {user?.user_metadata.name || "사용자"}님, 오늘의 기록을 확인해보세요!
           </p>

@@ -97,7 +97,7 @@ export default function GamePage() {
   return (
     <div className="pt-24 sm:pt-36 px-1 sm:px-6 space-y-4 sm:space-y-6 text-center mb-6">
       <div className="space-y-3">
-        <h1 className="text-l font-bold">🦆 오늘의 수도쿠를 풀어봐요 🦆</h1>
+        <h1 className="text-l font-bold">🦆 오늘의 스도쿠를 풀어봐요 🦆</h1>
         <div className="flex items-center justify-center gap-6">
           <select
             value={difficulty}

@@ -8,7 +8,7 @@ export default function MainPage() {
     <div className="pt-36 flex flex-col items-center justify-center p-8 space-y-6">
       <img src="/logo.svg" alt="매일 도쿠" className="h-24 w-24" />
       <h1 className="text-3xl font-bold">매일 도쿠</h1>
-      <p className="text-gray-600">매일 수도쿠 퍼즐로 두뇌를 깨워보세요.</p>
+      <p className="text-gray-600">매일 스도쿠 퍼즐로 두뇌를 깨워보세요.</p>
 
       {user ? (
         <div className="text-sm text-gray-700">
