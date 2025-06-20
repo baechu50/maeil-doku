@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { generateSudokuPuzzle, wrapSudokuBoard, createEmptyBoard } from "../lib/sudokuGenerator";
 import { useSudokuBoard } from "../hooks/useSudokuBoard";
 import { useSudokuValidation } from "../hooks/useSudokuValidation";
@@ -13,7 +14,15 @@ import { Button } from "@/components/ui/button";
 import { Redo2, Undo2, Trash2, SquarePen, Lightbulb } from "lucide-react";
 
 export default function GamePage() {
-  const [difficulty, setDifficulty] = useState<DifficultyLevel>("easy");
+  const [searchParams] = useSearchParams();
+  const urlDifficulty = searchParams.get("difficulty") as DifficultyLevel;
+
+  const [difficulty, setDifficulty] = useState<DifficultyLevel>(() => {
+    if (urlDifficulty && ["easy", "medium", "hard"].includes(urlDifficulty)) {
+      return urlDifficulty;
+    }
+    return "easy";
+  });
   const [currentSolution, setCurrentSolution] = useState<SudokuBoard>(() =>
     wrapSudokuBoard(createEmptyBoard())
   );

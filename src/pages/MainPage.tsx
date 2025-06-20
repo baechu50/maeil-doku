@@ -23,12 +23,26 @@ export default function MainPage() {
         </div>
       )}
 
-      <Link
-        to="/game"
-        className="px-6 py-3 bg-[#7E24FD] text-white rounded hover:bg-[#7E24FD]/80 transition"
-      >
-        오늘의 퍼즐 시작하기
-      </Link>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <Link
+          to="/game?difficulty=easy"
+          className="px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition text-center"
+        >
+          초급 시작하기
+        </Link>
+        <Link
+          to="/game?difficulty=medium"
+          className="px-6 py-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-center"
+        >
+          중급 시작하기
+        </Link>
+        <Link
+          to="/game?difficulty=hard"
+          className="px-6 py-3 bg-red-500 text-white rounded hover:bg-red-600 transition text-center"
+        >
+          고급 시작하기
+        </Link>
+      </div>
     </div>
   );
 }
