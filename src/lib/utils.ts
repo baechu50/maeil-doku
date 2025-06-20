@@ -23,18 +23,28 @@ export function getStreakCount(records: SudokuRecord[]): number {
     records.map((r) => new Date(r.solved_at).toLocaleDateString("sv-SE"))
   );
 
-  let count = 0;
   const today = new Date();
+  const todayStr = today.toLocaleDateString("sv-SE");
+
+  // 오늘을 풀었는지 확인
+  const playedToday = playedDates.has(todayStr);
+
+  let count = 0;
   const currentDate = new Date(today);
 
-  while (playedDates.has(currentDate.toLocaleDateString("sv-SE"))) {
-    count++;
+  if (playedToday) {
+    // 오늘을 풀었다면 오늘부터 과거로 거슬러 올라가기
+    while (playedDates.has(currentDate.toLocaleDateString("sv-SE"))) {
+      count++;
+      currentDate.setDate(currentDate.getDate() - 1);
+    }
+  } else {
+    // 오늘을 안 풀었다면 어제부터 과거로 거슬러 올라가기
     currentDate.setDate(currentDate.getDate() - 1);
-  }
-
-  const todayStr = today.toLocaleDateString("sv-SE");
-  if (!playedDates.has(todayStr) && count > 0) {
-    return count;
+    while (playedDates.has(currentDate.toLocaleDateString("sv-SE"))) {
+      count++;
+      currentDate.setDate(currentDate.getDate() - 1);
+    }
   }
 
   return count;
