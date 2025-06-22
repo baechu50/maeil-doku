@@ -5,6 +5,7 @@ import MainPage from "./pages/MainPage";
 import GamePage from "./pages/GamePage";
 import MyPage from "./pages/MyPage";
 import LoginPage from "./pages/LoginPage";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function App() {
   const { isLoading, session } = useSessionContext();
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/mypage" element={session ? <MyPage /> : <Navigate to="/login" />} />
       </Routes>
+      <Toaster />
     </Router>
   );
 }

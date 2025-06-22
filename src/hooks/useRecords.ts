@@ -18,8 +18,7 @@ export function useRecords() {
     setLoading(false);
 
     if (error) {
-      console.error("Error saving record:", error.message);
-      return { data: null, error };
+      throw new Error(`기록 저장 중 오류가 발생했습니다: ${error.message}`);
     }
 
     return { data, error: null };
@@ -46,8 +45,7 @@ export function useRecords() {
     setLoading(false);
 
     if (error) {
-      console.error("Error fetching records:", error.message);
-      return { data: null, error };
+      throw new Error(`기록을 불러오는 중 오류가 발생했습니다: ${error.message}`);
     }
 
     return { data: data as SudokuRecord[], error: null };
@@ -63,8 +61,7 @@ export function useRecords() {
     setLoading(false);
 
     if (error) {
-      console.error("Error fetching average times:", error.message);
-      return { data: null, error };
+      throw new Error(`평균 시간을 불러오는 중 오류가 발생했습니다: ${error.message}`);
     }
 
     return { data, error: null };
@@ -84,8 +81,7 @@ export function useRecords() {
     setLoading(false);
 
     if (error) {
-      console.error("Error fetching percentile:", error.message);
-      return { data: null, error };
+      throw new Error(`백분위를 계산하는 중 오류가 발생했습니다: ${error.message}`);
     }
 
     return { data, error: null };

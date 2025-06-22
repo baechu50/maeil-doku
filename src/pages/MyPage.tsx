@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 const DifficultyBadge = ({ difficulty, completed }: { difficulty: string; completed: boolean }) => {
   const colors = {
@@ -80,50 +81,57 @@ export default function MyPage() {
     }
 
     const fetchData = async () => {
-      const [todayResult, avgResult, monthResult] = await Promise.all([
-        fetchRecordsByDate(user.id, today),
-        fetchAverageTimeByDifficulty(user.id),
-        fetchRecordsByDate(
-          user.id,
-          new Date(yearandMonth[0], yearandMonth[1], 1).toLocaleDateString("sv-SE"),
-          new Date(yearandMonth[0], yearandMonth[1] + 1, 0).toLocaleDateString("sv-SE")
-        ),
-      ]);
+      try {
+        const [todayResult, avgResult, monthResult] = await Promise.all([
+          fetchRecordsByDate(user.id, today),
+          fetchAverageTimeByDifficulty(user.id),
+          fetchRecordsByDate(
+            user.id,
+            new Date(yearandMonth[0], yearandMonth[1], 1).toLocaleDateString("sv-SE"),
+            new Date(yearandMonth[0], yearandMonth[1] + 1, 0).toLocaleDateString("sv-SE")
+          ),
+        ]);
 
-      // 오늘 기록
-      if (todayResult.data) {
-        const records = (["easy", "medium", "hard"] as const).reduce(
-          (acc, level) => {
-            acc[level] = getFastestRecord(todayResult.data!.filter((r) => r.difficulty === level));
-            return acc;
-          },
-          { easy: null, medium: null, hard: null } as typeof todayRecords
-        );
-        setTodayRecords(records);
+        // 오늘 기록
+        if (todayResult.data) {
+          const records = (["easy", "medium", "hard"] as const).reduce(
+            (acc, level) => {
+              acc[level] = getFastestRecord(
+                todayResult.data!.filter((r) => r.difficulty === level)
+              );
+              return acc;
+            },
+            { easy: null, medium: null, hard: null } as typeof todayRecords
+          );
+          setTodayRecords(records);
 
-        const percentiles = { easy: null, medium: null, hard: null } as typeof todayPercentiles;
-        await Promise.all(
-          (["easy", "medium", "hard"] as const).map(async (level) => {
+          const percentiles = { easy: null, medium: null, hard: null } as typeof todayPercentiles;
+          for (const level of ["easy", "medium", "hard"] as const) {
             const record = records[level];
-            if (record) {
-              const result = await fetchPercentileByTime(level, record.time_seconds);
-              if (result.data !== null) percentiles[level] = result.data;
+            if (!record) continue;
+            const result = await fetchPercentileByTime(level, record.time_seconds);
+            if (result.data !== null) {
+              percentiles[level] = result.data;
             }
-          })
-        );
-        setTodayPercentiles(percentiles);
-      }
+          }
+          setTodayPercentiles(percentiles);
+        }
 
-      // 월간 기록
-      if (monthResult.data) {
-        setMonthlyRecords(
-          getMonthlyCalendarMap(monthResult.data, yearandMonth[0], yearandMonth[1])
-        );
-        setStreak(getStreakCount(monthResult.data));
-      }
+        // 월간 기록
+        if (monthResult.data) {
+          setMonthlyRecords(
+            getMonthlyCalendarMap(monthResult.data, yearandMonth[0], yearandMonth[1])
+          );
+          setStreak(getStreakCount(monthResult.data));
+        }
 
-      // 평균 통계
-      if (avgResult.data) setAverageStats(avgResult.data);
+        // 평균 통계
+        if (avgResult.data) setAverageStats(avgResult.data);
+      } catch (error) {
+        toast.error("기록 불러오기 실패", {
+          description: error instanceof Error ? error.message : "알 수 없는 에러",
+        });
+      }
     };
 
     fetchData();

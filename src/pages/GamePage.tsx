@@ -12,6 +12,7 @@ import { hashBoard } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Redo2, Undo2, Trash2, SquarePen, Lightbulb } from "lucide-react";
+import { toast } from "sonner";
 
 export default function GamePage() {
   const [searchParams] = useSearchParams();
@@ -75,18 +76,21 @@ export default function GamePage() {
     if (!isBoardFull || !user) return;
 
     const save = async () => {
-      const { error } = await saveRecord({
-        id: crypto.randomUUID(),
-        user_id: user.id,
-        solved_at: new Date().toLocaleDateString("sv-SE"),
-        difficulty,
-        time_seconds: timeRef.current,
-        hints_used: 3 - hintCount,
-        board_hash: hashBoard(board),
-      });
-
-      if (error) {
-        console.error("❌ 기록 저장 실패:", error.message);
+      try {
+        await saveRecord({
+          id: crypto.randomUUID(),
+          user_id: user.id,
+          solved_at: new Date().toLocaleDateString("sv-SE"),
+          difficulty,
+          time_seconds: timeRef.current,
+          hints_used: 3 - hintCount,
+          board_hash: hashBoard(board),
+        });
+        console.log("✅ 기록 저장 성공");
+      } catch (error) {
+        toast.error("기록 저장 실패", {
+          description: error instanceof Error ? error.message : "알 수 없는 에러",
+        });
       }
     };
 
