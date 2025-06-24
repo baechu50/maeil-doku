@@ -1,3 +1,4 @@
+import ReactGA from "react-ga4";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { generateSudokuPuzzle, wrapSudokuBoard, createEmptyBoard } from "../lib/sudokuGenerator";
@@ -308,7 +309,13 @@ function BoardResult({
       <div className="text-center">
         <button
           className="mt-2 px-4 py-2 bg-[#7E24FD] text-white text-sm rounded hover:bg-purple-700"
-          onClick={onRestart}
+          onClick={() => {
+            ReactGA.event("restart_game", {
+              category: "sudoku",
+              label: difficulty,
+            });
+            onRestart();
+          }}
         >
           새 게임 시작
         </button>
@@ -322,14 +329,36 @@ function BoardResult({
           onClick={() => {
             navigator.clipboard.writeText(title);
             toast.success("공유 텍스트가 복사되었습니다!");
+            ReactGA.event("share_click", {
+              category: "engagement",
+              label: "link_copy",
+            });
           }}
         >
           <Link className="w-4 h-4" />
         </Badge>
-        <FacebookShareButton url={shareUrl} title={title}>
+        <FacebookShareButton
+          url={shareUrl}
+          title={title}
+          onClick={() =>
+            ReactGA.event("share_click", {
+              category: "engagement",
+              label: "facebook",
+            })
+          }
+        >
           <FacebookIcon size={32} round />
         </FacebookShareButton>
-        <TwitterShareButton url={shareUrl} title={title}>
+        <TwitterShareButton
+          url={shareUrl}
+          title={title}
+          onClick={() =>
+            ReactGA.event("share_click", {
+              category: "engagement",
+              label: "x",
+            })
+          }
+        >
           <XIcon size={32} round />
         </TwitterShareButton>
       </div>
