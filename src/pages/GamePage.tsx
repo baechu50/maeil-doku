@@ -11,8 +11,10 @@ import { useRecords } from "@/hooks/useRecords";
 import { hashBoard } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Redo2, Undo2, Trash2, SquarePen, Lightbulb } from "lucide-react";
+import { Redo2, Undo2, Trash2, SquarePen, Lightbulb, Link } from "lucide-react";
 import { toast } from "sonner";
+import { shareUrl } from "@/lib/constants";
+import { FacebookShareButton, TwitterShareButton, FacebookIcon, XIcon } from "react-share";
 
 export default function GamePage() {
   const [searchParams] = useSearchParams();
@@ -285,8 +287,12 @@ function BoardResult({
   difficulty: string;
   onRestart: () => void;
 }) {
+  const title = `🧩 오늘의 스도쿠 완료! 이 시간보다 빠르게 가능?
+난이도: ${difficulty} | ${Math.floor(time / 60)}분 ${time % 60}초 | 힌트 ${usedHints}개 사용
+👉 지금 플레이해봐! ${shareUrl}`;
+
   return (
-    <div className="relative z-10 mt-6 p-6 border rounded-lg bg-white shadow-md text-left space-y-4 w-fit mx-auto">
+    <div className="relative z-10 mt-6 px-8 p-6 border rounded-lg bg-white shadow-md text-left space-y-4 w-fit mx-auto">
       <h2 className="text-2xl font-bold text-center text-[#7E24FD]">🎉 퍼즐 완료!</h2>
       <div className="text-gray-700">
         <p>
@@ -306,6 +312,26 @@ function BoardResult({
         >
           새 게임 시작
         </button>
+      </div>
+      <div className="text-center pt-4">
+        <h3 className="text-sm font-bold">친구에게 공유하기</h3>
+      </div>
+      <div className="flex justify-center gap-2">
+        <Badge
+          className="px-2 py-2 bg-gray-500 text-white text-sm rounded-full hover:bg-gray-600 w-8 h-8 flex items-center justify-center cursor-pointer"
+          onClick={() => {
+            navigator.clipboard.writeText(title);
+            toast.success("공유 텍스트가 복사되었습니다!");
+          }}
+        >
+          <Link className="w-4 h-4" />
+        </Badge>
+        <FacebookShareButton url={shareUrl} title={title}>
+          <FacebookIcon size={32} round />
+        </FacebookShareButton>
+        <TwitterShareButton url={shareUrl} title={title}>
+          <XIcon size={32} round />
+        </TwitterShareButton>
       </div>
     </div>
   );
