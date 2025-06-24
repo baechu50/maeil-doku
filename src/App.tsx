@@ -1,5 +1,5 @@
 import { useSessionContext } from "@supabase/auth-helpers-react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import ReactGA from "react-ga4";
 import Header from "./components/header";
@@ -9,6 +9,14 @@ import MyPage from "./pages/MyPage";
 import LoginPage from "./pages/LoginPage";
 import { Toaster } from "@/components/ui/sonner";
 
+function RouteChangeTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
+  }, [location]);
+  return null;
+}
+
 export default function App() {
   const { isLoading, session } = useSessionContext();
 
@@ -16,7 +24,6 @@ export default function App() {
     ReactGA.initialize([
       {
         trackingId: "G-YZ0Q7SEGEY",
-        gtagOptions: {},
       },
     ]);
   }, []);
@@ -31,6 +38,7 @@ export default function App() {
 
   return (
     <Router>
+      <RouteChangeTracker />
       <Header />
       <Routes>
         <Route path="/" element={<MainPage />} />
