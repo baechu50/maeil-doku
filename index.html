@@ -1,11 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-    <title>Maeil Doku</title>
-    <!-- Google tag (gtag.js) -->
+    <title>매일 도쿠 - 1일 1 스도쿠로 두뇌를 깨워보세요</title>
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="매일 새로운 스도쿠 퍼즐로 두뇌를 깨워보세요. 초급, 중급, 고급 난이도로 실력을 키우고 기록을 관리하세요."
+    />
+    <meta name="keywords" content="스도쿠, 퍼즐, 두뇌게임, 매일도쿠, 수학게임, 논리게임" />
+    <meta name="author" content="매일 도쿠" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://maeil-doku.vercel.app/" />
+    <meta property="og:title" content="매일 도쿠 - 1일 1 스도쿠로 두뇌를 깨워보세요" />
+    <meta
+      property="og:description"
+      content="매일 새로운 스도쿠 퍼즐로 두뇌를 깨워보세요. 초급, 중급, 고급 난이도로 실력을 키우고 기록을 관리하세요."
+    />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="매일 도쿠" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://maeil-doku.vercel.app/" />
+    <meta property="twitter:title" content="매일 도쿠 - 1일 1 스도쿠로 두뇌를 깨워보세요" />
+    <meta
+      property="twitter:description"
+      content="매일 새로운 스도쿠 퍼즐로 두뇌를 깨워보세요. 초급, 중급, 고급 난이도로 실력을 키우고 기록을 관리하세요."
+    />
+    <meta property="twitter:image" content="/og-image.png" />
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/main.tsx" as="script" type="module" />
+    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
+    <link rel="preload" href="./favicon.ico" as="image" type="image/x-icon" />
+
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+
+    <!-- Cache control headers for static assets -->
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable" />
+
+    <!-- Google tag (gtag.js) - Load asynchronously -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YZ0Q7SEGEY"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -13,9 +59,13 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
-      gtag("config", "G-YZ0Q7SEGEY");
+      gtag("config", "G-YZ0Q7SEGEY", {
+        page_title: document.title,
+        page_location: window.location.href,
+      });
     </script>
+
+    <!-- Google AdSense - Load asynchronously -->
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2907318231172096"
@@ -23,6 +73,28 @@
     ></script>
     <meta name="google-adsense-account" content="ca-pub-2907318231172096" />
     <meta name="google-site-verification" content="BIDGYdRtdoTFzclXQy7GTG9jKFHVE64R1_Wr9ZEBRxg" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "매일 도쿠",
+        "description": "매일 새로운 스도쿠 퍼즐로 두뇌를 깨워보세요",
+        "url": "https://maeil-doku.vercel.app/",
+        "applicationCategory": "Game",
+        "operatingSystem": "Web Browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "KRW"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "매일 도쿠"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
