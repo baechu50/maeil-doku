@@ -1,0 +1,71 @@
+{
+  "app": {
+    "title": "Maeil Doku"
+  },
+  "main": {
+    "slogan": "Wake up your brain with a daily Sudoku puzzle.",
+    "welcome": "Welcome, {name}!",
+    "savePrompt": "If you want to save your records",
+    "login": "Log in",
+    "startEasy": "Start Easy",
+    "startMedium": "Start Medium",
+    "startHard": "Start Hard"
+  },
+  "login": {
+    "continue": "Please log in to continue",
+    "google": "Login with Google"
+  },
+  "header": {
+    "home": "Home",
+    "game": "Game",
+    "mypage": "My Page",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "game": {
+    "title": "🦆 Try today's Sudoku 🦆",
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "complete": "🎉 Puzzle Complete!",
+    "difficultyLabel": "Difficulty",
+    "time": "Time Taken",
+    "hintsUsed": "Hints Used",
+    "retry": "Start New Game",
+    "share": "Share with friends",
+    "copyShareText": "Share text copied!",
+    "saveSuccess": "Record saved successfully",
+    "saveFail": "Failed to save record",
+    "unknownError": "Unknown error"
+  },
+  "mypage": {
+    "title": "Sudoku Dashboard",
+    "greeting": "Hello {name}, check your records for today!",
+    "streak": "Playing {count} days in a row",
+    "streakMsg": "Keep playing every day and improve your skills!",
+    "todayRecord": "Today's Record",
+    "todayRecordDesc": "Check the results of today's puzzles",
+    "completed": "Completed",
+    "incomplete": "Incomplete",
+    "rank": "Top {percent}%",
+    "hintCount": "{count} hints",
+    "allStats": "All Stats",
+    "allStatsDesc": "Check average performance by difficulty",
+    "difficulty": "Difficulty",
+    "avgTime": "Average Time",
+    "avgHints": "Average Hints",
+    "monthRecord": "This Month's Record",
+    "monthRecordDesc": "Check puzzle completion by date",
+    "legend": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "calendar": {
+      "days": "Sun,Mon,Tue,Wed,Thu,Fri,Sat"
+    },
+    "noRecord": "No record"
+  }
+}

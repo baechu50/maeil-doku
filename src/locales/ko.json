@@ -1,0 +1,71 @@
+{
+  "app": {
+    "title": "매일 도쿠"
+  },
+  "main": {
+    "slogan": "매일 스도쿠 퍼즐로 두뇌를 깨워보세요.",
+    "welcome": "환영합니다, {name}님!",
+    "savePrompt": "기록을 저장하고 싶다면",
+    "login": "로그인하세요",
+    "startEasy": "초급 시작하기",
+    "startMedium": "중급 시작하기",
+    "startHard": "고급 시작하기"
+  },
+  "login": {
+    "continue": "계속하려면 로그인하세요",
+    "google": "구글로 로그인"
+  },
+  "header": {
+    "home": "홈",
+    "game": "게임",
+    "mypage": "마이페이지",
+    "logout": "로그아웃",
+    "login": "로그인"
+  },
+  "game": {
+    "title": "🦆 오늘의 스도쿠를 풀어봐요 🦆",
+    "difficulty": {
+      "easy": "쉬움",
+      "medium": "보통",
+      "hard": "어려움"
+    },
+    "complete": "🎉 퍼즐 완료!",
+    "difficultyLabel": "난이도",
+    "time": "걸린 시간",
+    "hintsUsed": "사용한 힌트",
+    "retry": "새 게임 시작",
+    "share": "친구에게 공유하기",
+    "copyShareText": "공유 텍스트가 복사되었습니다!",
+    "saveSuccess": "기록 저장 성공",
+    "saveFail": "기록 저장 실패",
+    "unknownError": "알 수 없는 에러"
+  },
+  "mypage": {
+    "title": "스도쿠 대시보드",
+    "greeting": "반갑습니다 {name}님, 오늘의 기록을 확인해보세요!",
+    "streak": "{count}일 연속 플레이중",
+    "streakMsg": "계속해서 매일 플레이하며 실력을 쌓아보세요!",
+    "todayRecord": "오늘의 기록",
+    "todayRecordDesc": "오늘 플레이한 퍼즐들의 결과를 확인하세요",
+    "completed": "완료",
+    "incomplete": "미완료",
+    "rank": "상위 {percent}%",
+    "hintCount": "힌트 {count}개",
+    "allStats": "전체 통계",
+    "allStatsDesc": "난이도별 평균 성과를 확인하세요",
+    "difficulty": "난이도",
+    "avgTime": "평균 시간",
+    "avgHints": "평균 힌트",
+    "monthRecord": "이번 달 기록",
+    "monthRecordDesc": "날짜별 퍼즐 완료 현황을 확인하세요",
+    "legend": {
+      "easy": "초급",
+      "medium": "중급",
+      "hard": "고급"
+    },
+    "calendar": {
+      "days": "일,월,화,수,목,금,토"
+    },
+    "noRecord": "기록 없음"
+  }
+}

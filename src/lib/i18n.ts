@@ -1,20 +1,12 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import translations from "../locales/i18n.json";
+import ko from "../locales/ko.json";
+import en from "../locales/en.json";
 
-// JSON 파일을 i18next 형식으로 변환
 const resources = {
-  ko: {
-    translation: Object.fromEntries(
-      Object.entries(translations).map(([key, value]) => [key, value.ko])
-    ),
-  },
-  en: {
-    translation: Object.fromEntries(
-      Object.entries(translations).map(([key, value]) => [key, value.en])
-    ),
-  },
+  ko: { translation: ko },
+  en: { translation: en },
 };
 
 i18n
