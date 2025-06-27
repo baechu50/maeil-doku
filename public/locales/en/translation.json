@@ -38,7 +38,14 @@
     "copyShareText": "Share text copied!",
     "saveSuccess": "Record saved successfully",
     "saveFail": "Failed to save record",
-    "unknownError": "Unknown error"
+    "unknownError": "Unknown error",
+    "paused": "Timer paused...",
+    "shareTitle": "🧩 Completed today's Sudoku! Can you beat this time?",
+    "shareDescription": "Difficulty: {{difficulty}} | {{minutes}}min {{seconds}}sec | {{hints}} hints used",
+    "shareCall": "👉 Play now! {{url}}",
+    "minutes": "min",
+    "seconds": "sec",
+    "hintsCount": ""
   },
   "mypage": {
     "title": "Sudoku Dashboard",

@@ -305,22 +305,30 @@ function BoardResult({
     }
   };
 
-  const title = `🧩 오늘의 스도쿠 완료! 이 시간보다 빠르게 가능?
-난이도: ${getDifficultyText(difficulty)} | ${Math.floor(time / 60)}분 ${time % 60}초 | 힌트 ${usedHints}개 사용
-👉 지금 플레이해봐! ${shareUrl}`;
+  const title = `${t("game.shareTitle")}
+${t("game.shareDescription", {
+  difficulty: getDifficultyText(difficulty),
+  minutes: Math.floor(time / 60),
+  seconds: time % 60,
+  hints: usedHints,
+})}
+${t("game.shareCall", { url: shareUrl })}`;
 
   return (
     <div className="relative z-10 mt-6 px-8 p-6 border rounded-lg bg-white shadow-md text-left space-y-4 w-fit mx-auto">
       <h2 className="text-2xl font-bold text-center text-[#7E24FD]">{t("game.complete")}</h2>
       <div className="text-gray-700">
         <p>
-          <strong>{t("game.difficulty")}:</strong> {getDifficultyText(difficulty)}
+          <strong>{t("game.difficultyLabel")}:</strong> {getDifficultyText(difficulty)}
         </p>
         <p>
-          <strong>{t("game.time")}:</strong> {Math.floor(time / 60)}분 {time % 60}초
+          <strong>{t("game.time")}:</strong> {Math.floor(time / 60)}
+          {t("game.minutes")} {time % 60}
+          {t("game.seconds")}
         </p>
         <p>
-          <strong>{t("game.hintsUsed")}:</strong> {usedHints}개
+          <strong>{t("game.hintsUsed")}:</strong> {usedHints}
+          {t("game.hintsCount")}
         </p>
       </div>
       <div className="text-center">
@@ -384,9 +392,10 @@ function BoardResult({
 }
 
 function BoardPaused() {
+  const { t } = useTranslation();
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-      <div className="text-lg font-medium text-gray-700">타이머 중지 중...</div>
+      <div className="text-lg font-medium text-gray-700">{t("game.paused")}</div>
     </div>
   );
 }
