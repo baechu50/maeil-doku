@@ -1,6 +1,6 @@
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import ReactGA from "react-ga4";
 import Header from "./components/header";
 import MainPage from "./pages/MainPage";
@@ -37,16 +37,18 @@ export default function App() {
   }
 
   return (
-    <Router>
-      <RouteChangeTracker />
-      <Header />
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/game" element={<GamePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/mypage" element={session ? <MyPage /> : <Navigate to="/login" />} />
-      </Routes>
-      <Toaster />
-    </Router>
+    <Suspense fallback={<div>Loading translations...</div>}>
+      <Router>
+        <RouteChangeTracker />
+        <Header />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/game" element={<GamePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/mypage" element={session ? <MyPage /> : <Navigate to="/login" />} />
+        </Routes>
+        <Toaster />
+      </Router>
+    </Suspense>
   );
 }
