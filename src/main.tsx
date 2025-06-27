@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
@@ -11,8 +11,10 @@ const root = document.getElementById("root") as HTMLElement;
 
 ReactDOM.createRoot(root).render(
   <React.StrictMode>
-    <SessionContextProvider supabaseClient={supabase}>
-      <App />
-    </SessionContextProvider>
+    <Suspense fallback={<div>Loading translations...</div>}>
+      <SessionContextProvider supabaseClient={supabase}>
+        <App />
+      </SessionContextProvider>
+    </Suspense>
   </React.StrictMode>
 );
