@@ -8,6 +8,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    lng: "ko",
     fallbackLng: "ko",
     debug: true,
     interpolation: {
