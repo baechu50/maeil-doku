@@ -1,25 +1,27 @@
 import { Link } from "react-router-dom";
 import { useUser } from "@supabase/auth-helpers-react";
 import ReactGA from "react-ga4";
+import { useTranslation } from "react-i18next";
 
 export default function MainPage() {
   const user = useUser();
+  const { t } = useTranslation();
 
   return (
     <div className="pt-36 flex flex-col items-center justify-center p-8 space-y-6">
-      <img src="/logo.svg" alt="매일 도쿠" className="h-24 w-24" />
-      <h1 className="text-3xl font-bold">매일 도쿠</h1>
-      <p className="text-gray-600">매일 스도쿠 퍼즐로 두뇌를 깨워보세요.</p>
+      <img src="/logo.svg" alt={t("app.title")} className="h-24 w-24" />
+      <h1 className="text-3xl font-bold">{t("app.title")}</h1>
+      <p className="text-gray-600">{t("main.slogan")}</p>
 
       {user ? (
         <div className="text-sm text-gray-700">
-          환영합니다, <span className="font-bold">{user.user_metadata.full_name}</span>님!{" "}
+          {t("main.welcome", { name: user.user_metadata.full_name })}{" "}
         </div>
       ) : (
         <div className="text-sm text-gray-700">
-          기록을 저장하고 싶다면{" "}
+          {t("main.savePrompt")}{" "}
           <Link to="/login" className="text-[#7E24FD] underline">
-            로그인하세요
+            {t("main.login")}
           </Link>
         </div>
       )}
@@ -35,7 +37,7 @@ export default function MainPage() {
           }}
           className="px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition text-center"
         >
-          초급 시작하기
+          {t("main.startEasy")}
         </Link>
         <Link
           to="/game?difficulty=medium"
@@ -47,7 +49,7 @@ export default function MainPage() {
           }}
           className="px-6 py-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition text-center"
         >
-          중급 시작하기
+          {t("main.startMedium")}
         </Link>
         <Link
           to="/game?difficulty=hard"
@@ -59,7 +61,7 @@ export default function MainPage() {
           }}
           className="px-6 py-3 bg-red-500 text-white rounded hover:bg-red-600 transition text-center"
         >
-          고급 시작하기
+          {t("main.startHard")}
         </Link>
       </div>
     </div>

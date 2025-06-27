@@ -1,0 +1,206 @@
+{
+  "app.title": {
+    "ko": "매일 도쿠",
+    "en": "Maeil Doku"
+  },
+  "main.slogan": {
+    "ko": "매일 스도쿠 퍼즐로 두뇌를 깨워보세요.",
+    "en": "Wake up your brain with a daily Sudoku puzzle."
+  },
+  "main.welcome": {
+    "ko": "환영합니다, {name}님!",
+    "en": "Welcome, {name}!"
+  },
+  "main.savePrompt": {
+    "ko": "기록을 저장하고 싶다면",
+    "en": "If you want to save your records"
+  },
+  "main.login": {
+    "ko": "로그인하세요",
+    "en": "Log in"
+  },
+  "main.startEasy": {
+    "ko": "초급 시작하기",
+    "en": "Start Easy"
+  },
+  "main.startMedium": {
+    "ko": "중급 시작하기",
+    "en": "Start Medium"
+  },
+  "main.startHard": {
+    "ko": "고급 시작하기",
+    "en": "Start Hard"
+  },
+  "login.continue": {
+    "ko": "계속하려면 로그인하세요",
+    "en": "Please log in to continue"
+  },
+  "login.google": {
+    "ko": "구글로 로그인",
+    "en": "Login with Google"
+  },
+  "header.home": {
+    "ko": "홈",
+    "en": "Home"
+  },
+  "header.game": {
+    "ko": "게임",
+    "en": "Game"
+  },
+  "header.mypage": {
+    "ko": "마이페이지",
+    "en": "My Page"
+  },
+  "header.logout": {
+    "ko": "로그아웃",
+    "en": "Logout"
+  },
+  "header.login": {
+    "ko": "로그인",
+    "en": "Login"
+  },
+  "game.title": {
+    "ko": "🦆 오늘의 스도쿠를 풀어봐요 🦆",
+    "en": "🦆 Try today's Sudoku 🦆"
+  },
+  "game.difficulty.easy": {
+    "ko": "쉬움",
+    "en": "Easy"
+  },
+  "game.difficulty.medium": {
+    "ko": "보통",
+    "en": "Medium"
+  },
+  "game.difficulty.hard": {
+    "ko": "어려움",
+    "en": "Hard"
+  },
+  "game.complete": {
+    "ko": "🎉 퍼즐 완료!",
+    "en": "🎉 Puzzle Complete!"
+  },
+  "game.difficulty": {
+    "ko": "난이도",
+    "en": "Difficulty"
+  },
+  "game.time": {
+    "ko": "걸린 시간",
+    "en": "Time Taken"
+  },
+  "game.hintsUsed": {
+    "ko": "사용한 힌트",
+    "en": "Hints Used"
+  },
+  "game.retry": {
+    "ko": "새 게임 시작",
+    "en": "Start New Game"
+  },
+  "game.share": {
+    "ko": "친구에게 공유하기",
+    "en": "Share with friends"
+  },
+  "game.copyShareText": {
+    "ko": "공유 텍스트가 복사되었습니다!",
+    "en": "Share text copied!"
+  },
+  "game.saveSuccess": {
+    "ko": "기록 저장 성공",
+    "en": "Record saved successfully"
+  },
+  "game.saveFail": {
+    "ko": "기록 저장 실패",
+    "en": "Failed to save record"
+  },
+  "game.unknownError": {
+    "ko": "알 수 없는 에러",
+    "en": "Unknown error"
+  },
+  "mypage.title": {
+    "ko": "스도쿠 대시보드",
+    "en": "Sudoku Dashboard"
+  },
+  "mypage.greeting": {
+    "ko": "반갑습니다 {name}님, 오늘의 기록을 확인해보세요!",
+    "en": "Hello {name}, check your records for today!"
+  },
+  "mypage.streak": {
+    "ko": "{count}일 연속 플레이중",
+    "en": "Playing {count} days in a row"
+  },
+  "mypage.streakMsg": {
+    "ko": "계속해서 매일 플레이하며 실력을 쌓아보세요!",
+    "en": "Keep playing every day and improve your skills!"
+  },
+  "mypage.todayRecord": {
+    "ko": "오늘의 기록",
+    "en": "Today's Record"
+  },
+  "mypage.todayRecordDesc": {
+    "ko": "오늘 플레이한 퍼즐들의 결과를 확인하세요",
+    "en": "Check the results of today's puzzles"
+  },
+  "mypage.completed": {
+    "ko": "완료",
+    "en": "Completed"
+  },
+  "mypage.incomplete": {
+    "ko": "미완료",
+    "en": "Incomplete"
+  },
+  "mypage.rank": {
+    "ko": "상위 {percent}%",
+    "en": "Top {percent}%"
+  },
+  "mypage.hintCount": {
+    "ko": "힌트 {count}개",
+    "en": "{count} hints"
+  },
+  "mypage.allStats": {
+    "ko": "전체 통계",
+    "en": "All Stats"
+  },
+  "mypage.allStatsDesc": {
+    "ko": "난이도별 평균 성과를 확인하세요",
+    "en": "Check average performance by difficulty"
+  },
+  "mypage.difficulty": {
+    "ko": "난이도",
+    "en": "Difficulty"
+  },
+  "mypage.avgTime": {
+    "ko": "평균 시간",
+    "en": "Average Time"
+  },
+  "mypage.avgHints": {
+    "ko": "평균 힌트",
+    "en": "Average Hints"
+  },
+  "mypage.monthRecord": {
+    "ko": "이번 달 기록",
+    "en": "This Month's Record"
+  },
+  "mypage.monthRecordDesc": {
+    "ko": "날짜별 퍼즐 완료 현황을 확인하세요",
+    "en": "Check puzzle completion by date"
+  },
+  "mypage.legend.easy": {
+    "ko": "초급",
+    "en": "Easy"
+  },
+  "mypage.legend.medium": {
+    "ko": "중급",
+    "en": "Medium"
+  },
+  "mypage.legend.hard": {
+    "ko": "고급",
+    "en": "Hard"
+  },
+  "mypage.calendar.days": {
+    "ko": "일,월,화,수,목,금,토",
+    "en": "Sun,Mon,Tue,Wed,Thu,Fri,Sat"
+  },
+  "mypage.noRecord": {
+    "ko": "기록 없음",
+    "en": "No record"
+  }
+}

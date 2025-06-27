@@ -16,6 +16,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 const DifficultyBadge = ({ difficulty, completed }: { difficulty: string; completed: boolean }) => {
   const colors = {
@@ -31,6 +32,7 @@ export default function MyPage() {
   const user = useUser();
   const navigate = useNavigate();
   const { fetchRecordsByDate, fetchAverageTimeByDifficulty, fetchPercentileByTime } = useRecords();
+  const { t } = useTranslation();
 
   const [yearandMonth, setYearandMonth] = useState<number[]>([
     new Date().getFullYear(),
@@ -152,14 +154,27 @@ export default function MyPage() {
     setYearandMonth(([y, m]) => (m === 11 ? [y + 1, 0] : [y, m + 1]));
   };
 
+  const getDifficultyText = (level: string) => {
+    switch (level) {
+      case "easy":
+        return t("mypage.legend.easy");
+      case "medium":
+        return t("mypage.legend.medium");
+      case "hard":
+        return t("mypage.legend.hard");
+      default:
+        return level;
+    }
+  };
+
   return (
     <div className="min-h-screen p-4 pt-36">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* 헤더 */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-gray-900">스도쿠 대시보드</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t("mypage.title")}</h1>
           <p className="text-gray-600">
-            반갑습니다 {user?.user_metadata.name || "사용자"}님, 오늘의 기록을 확인해보세요!
+            {t("mypage.greeting", { name: user?.user_metadata.name || t("mypage.noRecord") })}
           </p>
         </div>
 
@@ -169,13 +184,13 @@ export default function MyPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div>
-                  <h3 className="text-xl font-bold">🔥 {streak}일 연속 플레이중 🔥</h3>
+                  <h3 className="text-xl font-bold">
+                    🔥 {t("mypage.streak", { count: streak })} 🔥
+                  </h3>
                 </div>
               </div>
             </div>
-            <p className="text-sm text-orange-100 mt-2">
-              &ldquo;계속해서 매일 플레이하며 실력을 쌓아보세요!&rdquo;
-            </p>
+            <p className="text-sm text-orange-100 mt-2">&ldquo;{t("mypage.streakMsg")}&rdquo;</p>
           </CardContent>
         </Card>
 
@@ -184,9 +199,9 @@ export default function MyPage() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Calendar className="h-5 w-5" />
-              <span>오늘의 기록</span>
+              <span>{t("mypage.todayRecord")}</span>
             </CardTitle>
-            <CardDescription>오늘 플레이한 퍼즐들의 결과를 확인하세요</CardDescription>
+            <CardDescription>{t("mypage.todayRecordDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -195,15 +210,13 @@ export default function MyPage() {
                 return (
                   <div key={level} className="p-4 border rounded-lg">
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold capitalize">
-                        {level === "easy" ? "초급" : level === "medium" ? "중급" : "고급"}
-                      </h4>
+                      <h4 className="font-semibold capitalize">{getDifficultyText(level)}</h4>
                       {record ? (
                         <Badge variant="default" className="bg-green-300">
-                          완료
+                          {t("mypage.completed")}
                         </Badge>
                       ) : (
-                        <Badge variant="secondary">미완료</Badge>
+                        <Badge variant="secondary">{t("mypage.incomplete")}</Badge>
                       )}
                     </div>
                     {record && (
@@ -215,14 +228,15 @@ export default function MyPage() {
                           </span>
                           {todayPercentiles[level] !== null && (
                             <span className="text-sm text-gray-600">
-                              (상위 {Math.round(todayPercentiles[level]!)}%)
+                              ({t("mypage.rank", { percent: Math.round(todayPercentiles[level]!) })}
+                              )
                             </span>
                           )}
                         </div>
                         <div className="flex items-center justify-between text-xs text-gray-500">
                           <div className="flex items-center space-x-1">
                             <Brain className="h-3 w-3" />
-                            <span>힌트 {record.hints_used}개</span>
+                            <span>{t("mypage.hintCount", { count: record.hints_used })}</span>
                           </div>
                         </div>
                       </div>
@@ -239,18 +253,18 @@ export default function MyPage() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <TrendingUp className="h-5 w-5" />
-              <span>전체 통계</span>
+              <span>{t("mypage.allStats")}</span>
             </CardTitle>
-            <CardDescription>난이도별 평균 성과를 확인하세요</CardDescription>
+            <CardDescription>{t("mypage.allStatsDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-2 px-4">난이도</th>
-                    <th className="text-left py-2 px-4">평균 시간</th>
-                    <th className="text-left py-2 px-4">평균 힌트</th>
+                    <th className="text-left py-2 px-4">{t("mypage.difficulty")}</th>
+                    <th className="text-left py-2 px-4">{t("mypage.avgTime")}</th>
+                    <th className="text-left py-2 px-4">{t("mypage.avgHints")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -258,9 +272,7 @@ export default function MyPage() {
                     const stats = avgByDifficulty[level];
                     return (
                       <tr key={level} className="border-b hover:bg-gray-50">
-                        <td className="py-3 px-4 font-semibold">
-                          {level === "easy" ? "초급" : level === "medium" ? "중급" : "고급"}
-                        </td>
+                        <td className="py-3 px-4 font-semibold">{getDifficultyText(level)}</td>
                         <td className="py-3 px-4">
                           {stats?.avg_time ? formatTime(Math.floor(stats.avg_time)) : "-"}
                         </td>
@@ -282,7 +294,7 @@ export default function MyPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Target className="h-5 w-5" />
-                <span>이번 달 기록</span>
+                <span>{t("mypage.monthRecord")}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <button onClick={goToPreviousMonth} className="p-1 hover:bg-gray-100 rounded">
@@ -296,7 +308,7 @@ export default function MyPage() {
                 </button>
               </div>
             </div>
-            <CardDescription>날짜별 퍼즐 완료 현황을 확인하세요</CardDescription>
+            <CardDescription>{t("mypage.monthRecordDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -304,25 +316,27 @@ export default function MyPage() {
               <div className="flex items-center space-x-4 text-xs">
                 <div className="flex items-center space-x-1">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>초급</span>
+                  <span>{t("mypage.legend.easy")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                  <span>중급</span>
+                  <span>{t("mypage.legend.medium")}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                  <span>고급</span>
+                  <span>{t("mypage.legend.hard")}</span>
                 </div>
               </div>
 
               {/* 달력 헤더 */}
               <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-gray-600">
-                {["일", "월", "화", "수", "목", "금", "토"].map((day) => (
-                  <div key={day} className="p-2">
-                    {day}
-                  </div>
-                ))}
+                {t("mypage.calendar.days")
+                  .split(",")
+                  .map((day) => (
+                    <div key={day} className="p-2">
+                      {day}
+                    </div>
+                  ))}
               </div>
               {/* 달력 본체 */}
               <div className="grid grid-cols-7 gap-1">
@@ -396,7 +410,8 @@ export default function MyPage() {
                     const targetDate = new Date(yearandMonth[0], yearandMonth[1], hoveredDate.day);
                     const dateStr = targetDate.toLocaleDateString("sv-SE");
                     const dateRecord = monthlyRecords[dateStr];
-                    if (!dateRecord) return <p className="text-gray-500 text-center">기록 없음</p>;
+                    if (!dateRecord)
+                      return <p className="text-gray-500 text-center">{t("mypage.noRecord")}</p>;
 
                     return (
                       <div className="space-y-2">
@@ -414,9 +429,7 @@ export default function MyPage() {
                                     : "border-red-500 text-red-600"
                               }`}
                             >
-                              <div className="font-medium">
-                                {level === "easy" ? "초급" : level === "medium" ? "중급" : "고급"}
-                              </div>
+                              <div className="font-medium">{getDifficultyText(level)}</div>
                               <div className="text-xs text-gray-600">
                                 시간: {formatTime(Math.floor(rec.time_seconds))} | 힌트:{" "}
                                 {rec.hints_used}개

@@ -16,10 +16,12 @@ import { Redo2, Undo2, Trash2, SquarePen, Lightbulb, Link } from "lucide-react";
 import { toast } from "sonner";
 import { shareUrl } from "@/lib/constants";
 import { FacebookShareButton, TwitterShareButton, FacebookIcon, XIcon } from "react-share";
+import { useTranslation } from "react-i18next";
 
 export default function GamePage() {
   const [searchParams] = useSearchParams();
   const urlDifficulty = searchParams.get("difficulty") as DifficultyLevel;
+  const { t } = useTranslation();
 
   const [difficulty, setDifficulty] = useState<DifficultyLevel>(() => {
     if (urlDifficulty && ["easy", "medium", "hard"].includes(urlDifficulty)) {
@@ -91,8 +93,8 @@ export default function GamePage() {
         });
         console.log("✅ 기록 저장 성공");
       } catch (error) {
-        toast.error("기록 저장 실패", {
-          description: error instanceof Error ? error.message : "알 수 없는 에러",
+        toast.error(t("game.saveFail"), {
+          description: error instanceof Error ? error.message : t("game.unknownError"),
         });
       }
     };
@@ -104,7 +106,7 @@ export default function GamePage() {
   return (
     <div className="pt-24 sm:pt-36 px-1 sm:px-6 space-y-4 sm:space-y-6 text-center mb-6">
       <div className="space-y-3">
-        <h1 className="text-l font-bold">🦆 오늘의 스도쿠를 풀어봐요 🦆</h1>
+        <h1 className="text-l font-bold">{t("game.title")}</h1>
         <div className="flex items-center justify-center gap-6">
           <select
             value={difficulty}
@@ -113,9 +115,9 @@ export default function GamePage() {
             }}
             className="px-2 py-1 text-sm rounded border bg-gray-100"
           >
-            <option value="easy">쉬움</option>
-            <option value="medium">보통</option>
-            <option value="hard">어려움</option>
+            <option value="easy">{t("game.difficulty.easy")}</option>
+            <option value="medium">{t("game.difficulty.medium")}</option>
+            <option value="hard">{t("game.difficulty.hard")}</option>
           </select>
           {!isBoardFull && (
             <Timer
@@ -288,22 +290,37 @@ function BoardResult({
   difficulty: string;
   onRestart: () => void;
 }) {
+  const { t } = useTranslation();
+
+  const getDifficultyText = (diff: string) => {
+    switch (diff) {
+      case "easy":
+        return t("game.difficulty.easy");
+      case "medium":
+        return t("game.difficulty.medium");
+      case "hard":
+        return t("game.difficulty.hard");
+      default:
+        return diff;
+    }
+  };
+
   const title = `🧩 오늘의 스도쿠 완료! 이 시간보다 빠르게 가능?
-난이도: ${difficulty} | ${Math.floor(time / 60)}분 ${time % 60}초 | 힌트 ${usedHints}개 사용
+난이도: ${getDifficultyText(difficulty)} | ${Math.floor(time / 60)}분 ${time % 60}초 | 힌트 ${usedHints}개 사용
 👉 지금 플레이해봐! ${shareUrl}`;
 
   return (
     <div className="relative z-10 mt-6 px-8 p-6 border rounded-lg bg-white shadow-md text-left space-y-4 w-fit mx-auto">
-      <h2 className="text-2xl font-bold text-center text-[#7E24FD]">🎉 퍼즐 완료!</h2>
+      <h2 className="text-2xl font-bold text-center text-[#7E24FD]">{t("game.complete")}</h2>
       <div className="text-gray-700">
         <p>
-          <strong>난이도:</strong> {difficulty}
+          <strong>{t("game.difficulty")}:</strong> {getDifficultyText(difficulty)}
         </p>
         <p>
-          <strong>걸린 시간:</strong> {Math.floor(time / 60)}분 {time % 60}초
+          <strong>{t("game.time")}:</strong> {Math.floor(time / 60)}분 {time % 60}초
         </p>
         <p>
-          <strong>사용한 힌트:</strong> {usedHints}개
+          <strong>{t("game.hintsUsed")}:</strong> {usedHints}개
         </p>
       </div>
       <div className="text-center">
@@ -317,18 +334,18 @@ function BoardResult({
             onRestart();
           }}
         >
-          새 게임 시작
+          {t("game.retry")}
         </button>
       </div>
       <div className="text-center pt-4">
-        <h3 className="text-sm font-bold">친구에게 공유하기</h3>
+        <h3 className="text-sm font-bold">{t("game.share")}</h3>
       </div>
       <div className="flex justify-center gap-2">
         <Badge
           className="px-2 py-2 bg-gray-500 text-white text-sm rounded-full hover:bg-gray-600 w-8 h-8 flex items-center justify-center cursor-pointer"
           onClick={() => {
             navigator.clipboard.writeText(title);
-            toast.success("공유 텍스트가 복사되었습니다!");
+            toast.success(t("game.copyShareText"));
             ReactGA.event("share_click", {
               category: "engagement",
               label: "link_copy",

@@ -5,6 +5,7 @@ import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./lib/supabaseClient";
 
 import "./globals.css";
+import "./lib/i18n";
 
 const root = document.getElementById("root") as HTMLElement;
 
