@@ -1,5 +1,14 @@
 {
-  "rewrites": [{ "source": "/:path*", "destination": "/index.html" }],
+  "rewrites": [
+    {
+      "source": "/locales/:lng/:ns",
+      "destination": "/locales/:lng/:ns"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/:path*",
